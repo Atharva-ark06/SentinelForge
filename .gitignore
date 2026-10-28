@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+.env
+*.sqlite3
+.coverage
+htmlcov/
+scripts/.sentinelforge_sensor_state.json
+scripts/.sentinelforge_sensor_state.json.tmp
