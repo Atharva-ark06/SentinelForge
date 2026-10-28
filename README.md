@@ -4,6 +4,8 @@
 
 SentinelForge demonstrates a basic security monitoring workflow: collect authentication events, evaluate detection rules, store alert evidence, and review results in a dashboard. It is an educational prototype, not a production SIEM.
 
+Based on Task 6 and 13 combined (EduRankAI)
+
 ## Dashboard Preview
 
 The screenshots below are loaded directly from Cloudinary.
