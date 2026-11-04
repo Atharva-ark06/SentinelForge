@@ -210,3 +210,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 08 — local-first architecture -->
 
 <!-- Contribution log 09 — test expectations -->
+
+<!-- Contribution log 10 — security awareness -->
