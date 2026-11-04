@@ -248,3 +248,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 27 — architecture clarity -->
 
 <!-- Contribution log 28 — project limitations -->
+
+<!-- Contribution log 29 — workflow automation -->
