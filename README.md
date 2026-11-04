@@ -270,3 +270,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 38 — auditability -->
 
 <!-- Contribution log 39 — dependency review -->
+
+<!-- Contribution log 40 — secrets handling -->
