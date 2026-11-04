@@ -128,6 +128,70 @@ npm run build
 
 GitHub Actions runs backend tests/compile checks and frontend production build. A separate workflow audits dependencies.
 
+## Configure your own API key (local backend)
+
+SentinelForge protects its write endpoints with a shared API key. **Generate your own key; never use a key published in screenshots, commits, chat, or examples.** The key is for your local/deployed API—not GitHub Pages. Keep it private and rotate it if exposed.
+
+### 1. Generate a strong key (PowerShell)
+
+From the repository root:
+
+```powershell
+$env:SENTINELFORGE_API_KEY = python -c "import secrets; print(secrets.token_urlsafe(32))"
+$env:SENTINELFORGE_API_KEY
+```
+
+Copy the generated value into your local `.env` file (do not commit it).
+
+### 2. Create a local `.env`
+
+Create `.env` in the repository root:
+
+```dotenv
+SENTINELFORGE_API_KEY=replace_with_your_generated_secret
+SENTINELFORGE_ALLOWED_ORIGINS=http://127.0.0.1:5173,http://localhost:5173
+SENTINELFORGE_ALLOWED_HOSTS=127.0.0.1,localhost,testserver
+SENTINELFORGE_ENABLE_DOCS=true
+# Optional: store the SQLite database at a custom path
+# SENTINELFORGE_DB=sentinelforge.sqlite3
+```
+
+The repository's `.gitignore` excludes `.env`. Verify before committing:
+
+```powershell
+git check-ignore .env
+git status --short
+```
+
+### 3. Load `.env` when starting the API
+
+FastAPI does **not** automatically read `.env`. Install Uvicorn's dotenv support if needed, then start the server with `--env-file`:
+
+```powershell
+python -m pip install "uvicorn[standard]" python-dotenv
+python -m uvicorn sentinelforge.api:app --reload --env-file .env
+```
+
+Alternatively, set the environment variable directly in the current PowerShell session before launching Uvicorn:
+
+```powershell
+$env:SENTINELFORGE_API_KEY = "paste_your_generated_key_here"
+python -m uvicorn sentinelforge.api:app --reload
+```
+
+### 4. Send the key with write requests
+
+Use the `X-API-Key` header for `POST /events` and `POST /demo/run`. Example with PowerShell:
+
+```powershell
+$headers = @{ "X-API-Key" = $env:SENTINELFORGE_API_KEY }
+Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8000/demo/run" -Headers $headers
+```
+
+Read-only endpoints (`GET /health`, `GET /events`, `GET /alerts`) do not require the key. If the API key is missing, write operations fail closed; a wrong key returns `401`.
+
+**Never** put secrets in frontend source code, `VITE_*` variables, GitHub Pages, screenshots, or committed files. GitHub Pages serves only static frontend assets and cannot securely hold a private API key. For a remotely hosted API, use the host's secret/environment-variable settings, HTTPS, and exact production origin/host allowlists; do not expose the API directly to the public internet without additional controls.
+
 ## GitHub Pages
 
 The `.github/workflows/pages.yml` workflow builds and deploys the **static React frontend** from `main`. Pages does not host FastAPI, SQLite, or the Windows sensor. Live API functionality requires a separately deployed API over HTTPS with secure configuration.
