@@ -262,3 +262,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 34 — deployment scope -->
 
 <!-- Contribution log 35 — risk methodology -->
+
+<!-- Contribution log 36 — risk score explanation -->
