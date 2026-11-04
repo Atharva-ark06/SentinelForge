@@ -173,7 +173,7 @@ def send_event(event: dict[str, Any], api_url: str) -> bool:
     return False
 
 
-def process_events(last_record_id: int, events: list[dict[str, Any]], state_file: Path, api_url: str) -> tuple[int, int, int]:
+def process_events(last_record_id: int, events: list[dict[str, Any]], state_file: Path, api_url: str, api_key: str = DEFAULT_API_KEY) -> tuple[int, int, int]:
     current_id = last_record_id
     sent = skipped = new_count = 0
     for event in events:
@@ -197,7 +197,7 @@ def process_events(last_record_id: int, events: list[dict[str, Any]], state_file
     return current_id, sent, skipped
 
 
-def poll_once(last_record_id: int | None, state_file: Path, api_url: str, max_events: int = MAX_EVENTS) -> int:
+def poll_once(last_record_id: int | None, state_file: Path, api_url: str, max_events: int = MAX_EVENTS, api_key: str = DEFAULT_API_KEY) -> int:
     events = fetch_security_events(max_events)
     if not events:
         print("[POLL] No matching Windows logon events returned.")
@@ -208,7 +208,7 @@ def poll_once(last_record_id: int | None, state_file: Path, api_url: str, max_ev
         print(f"[READY] Baseline set to record {newest_id}; historical events were not ingested.")
         print("[POLL] Waiting for newer eligible events. Local logons without source IPs are skipped.")
         return newest_id
-    current_id, sent, skipped = process_events(last_record_id, events, state_file, api_url)
+    current_id, sent, skipped = process_events(last_record_id, events, state_file, api_url, api_key)
     if sent == 0 and skipped == 0 and current_id == last_record_id:
         print(f"[POLL] No new events. Checkpoint remains at {last_record_id}; latest visible record is {newest_id}.")
     else:
@@ -239,7 +239,7 @@ def main() -> int:
 
     while True:
         try:
-            last_record_id = poll_once(last_record_id, args.state_file, args.api_url)
+            last_record_id = poll_once(last_record_id, args.state_file, args.api_url, api_key=args.api_key)
         except subprocess.CalledProcessError as exc:
             detail = (exc.stderr or exc.stdout or str(exc)).strip()
             print(f"[ERROR] Could not query Windows Security log: {detail}")
