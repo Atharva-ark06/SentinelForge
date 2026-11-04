@@ -220,3 +220,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 13 — event flow documentation -->
 
 <!-- Contribution log 14 — reproducibility notes -->
+
+<!-- Contribution log 15 — detection rule documentation -->
