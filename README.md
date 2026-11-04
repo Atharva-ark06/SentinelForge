@@ -1,88 +1,67 @@
 # SentinelForge
 
-**A local-first defensive security monitoring prototype** built with FastAPI, SQLite, explainable authentication detection rules, an optional read-only Windows Security Event Log sensor, and a React SOC dashboard.
+**Local-first defensive security monitoring prototype** using FastAPI, SQLite, explainable authentication detections, an optional read-only Windows Security Event Log sensor, and a React SOC dashboard.
 
-SentinelForge demonstrates a basic security monitoring workflow: collect authentication events, evaluate detection rules, store alert evidence, and review results in a dashboard. It is an educational prototype, not a production SIEM.
+> Educational project—not a production SIEM. Use synthetic or explicitly authorized lab telemetry only.
 
-Based on Task 6 and 13 combined (EduRankAI)
+## Dashboard preview
 
-## Dashboard Preview
+| Overview | Alerts |
+|---|---|
+| ![Overview dashboard](https://res.cloudinary.com/wpop4xyo/image/upload/v1793213099/overview_of_dashboard.png) | ![Alerts](https://res.cloudinary.com/wpop4xyo/image/upload/v1793213000/alerts.png) |
 
-The screenshots below are loaded directly from Cloudinary.
+| Authentication events | Detection rules |
+|---|---|
+| ![Events](https://res.cloudinary.com/wpop4xyo/image/upload/v1793213058/authentication_events.png) | ![Rules](https://res.cloudinary.com/wpop4xyo/image/upload/v1793213025/detections_rules.png) |
 
-### 1. Overview Dashboard
-![SentinelForge Overview Dashboard](https://res.cloudinary.com/wpop4xyo/image/upload/v1793213099/overview_of_dashboard.png)
+## Capabilities
 
-### 2. Alerts
-![SentinelForge Alerts](https://res.cloudinary.com/wpop4xyo/image/upload/v1793213000/alerts.png)
+- SOC dashboard: overview, alerts, authentication events, and detection rules
+- FastAPI REST API with validated event ingestion and health endpoint
+- SQLite persistence for normalized event records and alert evidence
+- Explainable rules for repeated authentication failures and multi-account source activity
+- Synthetic demo event generator for repeatable walkthroughs
+- Optional read-only Windows sensor for Security Event IDs 4624 and 4625
+- Python tests, React/TypeScript frontend, CI, dependency audit, and GitHub Pages workflow
 
-### 3. Authentication Events
-![SentinelForge Authentication Events](https://res.cloudinary.com/wpop4xyo/image/upload/v1793213058/authentication_events.png)
+## Stack
 
-### 4. Detection Rules
-![SentinelForge Detection Rules](https://res.cloudinary.com/wpop4xyo/image/upload/v1793213025/detections_rules.png)
-
-## Features
-
-- **SOC dashboard:** Overview, Alerts, Events, and Detection Rules views.
-- **FastAPI backend:** API endpoints for health status, events, alerts, and demo data.
-- **SQLite storage:** Persists normalized authentication events and alert evidence.
-- **Explainable detection:** Two rule-based detections for suspicious authentication patterns.
-- **Synthetic demo mode:** Generates repeatable sample events for demonstrations.
-- **Optional Windows sensor:** Reads Windows Security Event IDs **4624** (successful logon) and **4625** (failed logon) in read-only mode.
-- **Input validation and tests:** Pydantic request validation and tests for API behavior, detection rules, and sensor parsing/checkpoint behavior.
-
-## Technology Stack
-
-- **Backend:** Python, FastAPI, Uvicorn, Pydantic
-- **Database:** SQLite
-- **Frontend:** React, TypeScript, Vite, Tailwind CSS
-- **Visualization and icons:** Recharts, Lucide
-- **Sensor:** Python with Windows Security Event Log access
+**Backend:** Python · FastAPI · Pydantic · Uvicorn  
+**Storage:** SQLite  
+**Frontend:** React · TypeScript · Vite · Tailwind CSS · Recharts · Lucide  
+**Sensor:** Python Windows Event Log reader
 
 ## Architecture
 
 ```text
-Windows Security Log (optional)       Synthetic demo / API client
-                |                                  |
-                v                                  v
-       Read-only Windows sensor --------------> FastAPI API
-                                                   |
-                                            Pydantic validation
-                                                   |
-                                             Detection rules
-                                                   |
-                                            SQLite events/alerts
-                                                   |
-                                     React SOC dashboard (Vite)
-                                     Overview / Alerts / Events / Rules
+Windows Security Event Log (optional)       Synthetic demo / API client
+                   |                                    |
+                   v                                    v
+          Read-only sensor ------------------------> FastAPI
+                                                       |
+                                                Pydantic validation
+                                                       |
+                                                Detection rules
+                                                       |
+                                                  SQLite
+                                                       |
+                                             React SOC dashboard
 ```
 
-## Quick Start — Windows PowerShell
+## Run locally (Windows PowerShell)
 
-### 1. Set up the Python environment
-
-From the repository root:
+### Backend
 
 ```powershell
 py -m venv .venv
-.\\.venv\\Scripts\\Activate.ps1
+.\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-```
-
-### 2. Start the backend
-
-Keep this terminal open:
-
-```powershell
 python -m uvicorn sentinelforge.api:app --reload
 ```
 
-The API runs at `http://127.0.0.1:8000`. Interactive API documentation is available at `http://127.0.0.1:8000/docs`.
+API: `http://127.0.0.1:8000` · Swagger: `http://127.0.0.1:8000/docs`
 
-### 3. Start the frontend
-
-Open a second terminal in the repository root:
+### Frontend (second terminal)
 
 ```powershell
 cd frontend
@@ -90,205 +69,101 @@ npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite (normally `http://127.0.0.1:5173`). The Vite development server proxies `/health`, `/events`, `/alerts`, and `/demo/run` to the FastAPI backend on port 8000. Keep both backend and frontend running while using the dashboard.
+Vite normally serves `http://127.0.0.1:5173` and proxies API routes to the local FastAPI process.
 
-### 4. Load demo events
-
-With the backend running, use the dashboard's **Run demo** action or run the script from a third terminal at the repository root:
+### Synthetic demo
 
 ```powershell
-python .\\scripts\\load_demo.py
+# From repository root, with backend running
+python .\scripts\load_demo.py
 ```
 
-Inspect the API directly at:
+## Detection rules
 
-- `http://127.0.0.1:8000/health`
-- `http://127.0.0.1:8000/events`
-- `http://127.0.0.1:8000/alerts`
+| Rule | Threshold | Meaning |
+|---|---|---|
+| `SF-AUTH-001` | ≥5 failed logins for one username + source IP in 10 minutes | Possible password guessing |
+| `SF-AUTH-002` | ≥3 distinct usernames associated with one source IP in 10 minutes | Possible password spraying / enumeration |
 
-## Detection Rules
+These heuristics can produce false positives (NAT, proxies, admin activity, lab tests). Alerts are not proof of compromise.
 
-| Rule | Trigger | Severity | Interpretation |
-|---|---|---|---|
-| `SF-AUTH-001` | At least 5 failed logins for the same username and source IP within a 10-minute lookback | Medium | May indicate password guessing |
-| `SF-AUTH-002` | At least 3 distinct usernames associated with one source IP within a 10-minute lookback | Medium | May indicate password spraying or account enumeration |
+## Optional Windows sensor
 
-These rules are heuristics, not proof of compromise. NAT, proxies, legitimate administration, and test activity can cause false positives. The rule cards in the frontend describe the current backend rules; the backend does not currently expose a dedicated rules API endpoint.
-
-## Optional Windows Security Event Log Sensor
-
-The sensor reads Windows Security Event IDs 4624 and 4625 and forwards eligible events to the API. It does not change audit policy, block logons, or perform remediation.
-
-1. Start the backend first.
-2. Open **PowerShell as Administrator**; typical Windows installations require elevated permissions to read the Security log.
-3. From the repository root, activate the virtual environment and run:
+The sensor reads Security Event IDs **4624** (successful logon) and **4625** (failed logon). It does not change audit policy, block logons, or remediate.
 
 ```powershell
-.\\.venv\\Scripts\\Activate.ps1
-python .\\scripts\\windows_sensor.py
+# Run from repository root; elevated PowerShell may be required
+.\.venv\Scripts\Activate.ps1
+python .\scripts\windows_sensor.py
+python .\scripts\windows_sensor.py --once
+python .\scripts\windows_sensor.py --interval 5
 ```
 
-Useful options:
+It establishes a first-run baseline, skips older records, and omits events with unusable account/IP fields. Its checkpoint `scripts/.sentinelforge_sensor_state.json` is generated locally and must not be committed. Polling is capped at 250 records per cycle.
+
+## API reference
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/health` | Service health |
+| GET | `/events?limit=100` | Events (limit 1–1000) |
+| GET | `/alerts?limit=100&severity=medium` | Alerts with optional severity filter |
+| POST | `/events` | Ingest validated event; requires `X-API-Key` |
+| POST | `/demo/run` | Generate synthetic events; requires `X-API-Key` |
+
+Write endpoints require `SENTINELFORGE_API_KEY`. If it is not configured, ingestion fails closed with HTTP 503. Configure exact origins and hostnames for deployments; see [Security Risk Register](docs/security-risk-register.md).
+
+## Tests and build
 
 ```powershell
-python .\\scripts\\windows_sensor.py --once
-python .\\scripts\\windows_sensor.py --interval 5
-python .\\scripts\\windows_sensor.py --api-url http://127.0.0.1:8000/events
-```
-
-On first run, the sensor saves a baseline record ID and deliberately does not ingest older log entries. It only sends events with a usable account, timestamp, host, and valid source IP. Many local Windows logons report the IP address as `-`, so they are skipped rather than assigned a fabricated IP. A single workstation may therefore produce no sensor-ingested events during ordinary local use; the synthetic demo path is available for repeatable demonstrations.
-
-The sensor uses a local checkpoint file at `scripts/.sentinelforge_sensor_state.json`; do not commit this generated file. It queries up to 250 matching events per poll, so high event volume can exceed this prototype's collection limit.
-
-## Tests and Build
-
-Run the backend tests from the repository root:
-
-```powershell
+# Repository root
 python -m pytest -q
-```
+python -m compileall -q sentinelforge scripts
 
-Build the frontend from the repository root:
-
-```powershell
+# Frontend
 cd frontend
-npm install
+npm ci
 npm run build
 ```
 
-Run these commands in your environment before submission and report the actual results. A successful local app launch alone does not establish that every test or production build has passed.
+GitHub Actions runs backend tests/compile checks and frontend production build. A separate workflow audits dependencies.
 
-## API Endpoints
+## GitHub Pages
 
-| Method | Endpoint | Purpose |
-|---|---|---|
-| `GET` | `/health` | API health check |
-| `GET` | `/events` | Retrieve stored security events |
-| `GET` | `/alerts` | Retrieve generated alerts |
-| `POST` | `/demo/run` | Insert synthetic demo events |
+The `.github/workflows/pages.yml` workflow builds and deploys the **static React frontend** from `main`. Pages does not host FastAPI, SQLite, or the Windows sensor. Live API functionality requires a separately deployed API over HTTPS with secure configuration.
 
-The frontend uses the existing FastAPI backend; no external AI or threat-intelligence API is required.
+After merge, select **Settings → Pages → Build and deployment → GitHub Actions**.
 
-## Security and Scope Limitations
+Project site: **https://atharva-ark06.github.io/SentinelForge/**
 
-- This is an educational, local-first prototype. The API does not implement authentication or authorization; keep it bound to localhost and do not expose it to an untrusted network.
-- The Windows sensor is a simple polling/checkpoint design, not a production endpoint agent.
-- Synthetic demo events use documentation-only IPv4 ranges such as `192.0.2.0/24` and `198.51.100.0/24`; they are not real source telemetry.
-- Production use would require authentication/authorization, TLS, rate limiting, secrets management, retention controls, monitoring, resilient ingestion, and a threat-model review.
-- Use synthetic or otherwise authorized lab data only.
+## Security and risk management
 
-## Project Structure
+The [risk register](docs/security-risk-register.md) documents likelihood × impact scoring, controls, treatment, residual risk, and a deployment gate mapped for learning to:
+
+- NIST Cybersecurity Framework (CSF) 2.0
+- NIST SP 800-30 Rev. 1 (risk assessment)
+- NIST SP 800-53 Rev. 5 (security/privacy controls)
+- NIST SP 800-218 (Secure Software Development Framework)
+- ISO/IEC 27001:2022 (ISMS)
+- OWASP ASVS (application security verification)
+
+This is a practical alignment—not an audit, certification, or compliance attestation.
+
+## Repository layout
 
 ```text
-sentinelforge/                  API, schema, database, detection rules
-scripts/load_demo.py            Repeatable synthetic event generator
-scripts/windows_sensor.py       Optional Windows Security log sensor
-tests/                          API and sensor tests
-docs/                            Architecture and roadmap
-frontend/                       React SOC dashboard
+sentinelforge/                 API, models, database, detection logic
+scripts/load_demo.py           Synthetic event generator
+scripts/windows_sensor.py       Optional Windows event sensor
+tests/                         Backend and sensor tests
+docs/                         Architecture, roadmap, risk register
+frontend/                      React SOC dashboard
+.github/workflows/              CI, dependency audit, Pages deploy
 ```
 
-## Roadmap
+## Limitations and responsible use
 
-See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening tasks. SentinelForge is a learning and demonstration prototype, not a production SIEM.
-
-
-<!-- Contribution log 01 — project scope documentation -->
-
-<!-- Contribution log 02 — baseline behavior documentation -->
-
-<!-- Contribution log 03 — repository navigation improvement -->
-
-<!-- Contribution log 04 — setup clarification -->
-
-<!-- Contribution log 05 — API workflow documentation -->
-
-<!-- Contribution log 06 — defensive monitoring explanation -->
-
-<!-- Contribution log 07 — maintainability notes -->
-
-<!-- Contribution log 08 — local-first architecture -->
-
-<!-- Contribution log 09 — test expectations -->
-
-<!-- Contribution log 10 — security awareness -->
-
-<!-- Contribution log 11 — sensor limitation notes -->
-
-<!-- Contribution log 12 — demo data description -->
-
-<!-- Contribution log 13 — event flow documentation -->
-
-<!-- Contribution log 14 — reproducibility notes -->
-
-<!-- Contribution log 15 — detection rule documentation -->
-
-<!-- Contribution log 16 — alert evidence -->
-
-<!-- Contribution log 17 — false-positive context -->
-
-<!-- Contribution log 18 — response schema -->
-
-<!-- Contribution log 19 — Windows guidance -->
-
-<!-- Contribution log 20 — safe lab operations -->
-
-<!-- Contribution log 21 — dashboard component notes -->
-
-<!-- Contribution log 22 — frontend tooling -->
-
-<!-- Contribution log 23 — Python setup notes -->
-
-<!-- Contribution log 24 — SQLite persistence -->
-
-<!-- Contribution log 25 — synthetic telemetry -->
-
-<!-- Contribution log 26 — security boundaries -->
-
-<!-- Contribution log 27 — architecture clarity -->
-
-<!-- Contribution log 28 — project limitations -->
-
-<!-- Contribution log 29 — workflow automation -->
-
-<!-- Contribution log 30 — onboarding -->
-
-<!-- Contribution log 31 — CI responsibilities -->
-
-<!-- Contribution log 32 — static hosting -->
-
-<!-- Contribution log 33 — Pages configuration -->
-
-<!-- Contribution log 34 — deployment scope -->
-
-<!-- Contribution log 35 — risk methodology -->
-
-<!-- Contribution log 36 — risk score explanation -->
-
-<!-- Contribution log 37 — security control mapping -->
-
-<!-- Contribution log 38 — auditability -->
-
-<!-- Contribution log 39 — dependency review -->
-
-<!-- Contribution log 40 — secrets handling -->
-
-<!-- Contribution log 41 — access boundaries -->
-
-<!-- Contribution log 42 — API hardening notes -->
-
-<!-- Contribution log 43 — response header controls -->
-
-<!-- Contribution log 44 — CORS configuration -->
-
-<!-- Contribution log 45 — trusted host configuration -->
-
-<!-- Contribution log 46 — threat assumptions -->
-
-<!-- Contribution log 47 — response readiness -->
-
-<!-- Contribution log 48 — recovery planning -->
-
-<!-- Contribution log 49 — verification gate -->
-
-<!-- Contribution log 50 — README change ledger completed -->
+- Prototype scope: local-first, rule-based, single-node SQLite.
+- Do not expose the API directly to untrusted networks.
+- Do not upload real user or organizational telemetry without authorization and security review.
+- Production readiness requires robust identity/authorization, rate limiting, TLS, secrets management, retention, backups, monitoring, incident response, and independent threat modeling.
