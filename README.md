@@ -191,3 +191,6 @@ frontend/                       React SOC dashboard
 ## Roadmap
 
 See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening tasks. SentinelForge is a learning and demonstration prototype, not a production SIEM.
+
+
+<!-- Contribution log 01 — project scope documentation -->
