@@ -212,3 +212,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 09 — test expectations -->
 
 <!-- Contribution log 10 — security awareness -->
+
+<!-- Contribution log 11 — sensor limitation notes -->
