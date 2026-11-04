@@ -250,3 +250,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 28 — project limitations -->
 
 <!-- Contribution log 29 — workflow automation -->
+
+<!-- Contribution log 30 — onboarding -->
