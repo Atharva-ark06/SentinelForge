@@ -228,3 +228,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 17 — false-positive context -->
 
 <!-- Contribution log 18 — response schema -->
+
+<!-- Contribution log 19 — Windows guidance -->
