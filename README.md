@@ -274,3 +274,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 40 — secrets handling -->
 
 <!-- Contribution log 41 — access boundaries -->
+
+<!-- Contribution log 42 — API hardening notes -->
