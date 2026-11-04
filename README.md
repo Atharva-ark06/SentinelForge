@@ -258,3 +258,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 32 — static hosting -->
 
 <!-- Contribution log 33 — Pages configuration -->
+
+<!-- Contribution log 34 — deployment scope -->
