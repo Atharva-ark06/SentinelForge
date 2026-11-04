@@ -204,3 +204,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 05 — API workflow documentation -->
 
 <!-- Contribution log 06 — defensive monitoring explanation -->
+
+<!-- Contribution log 07 — maintainability notes -->
