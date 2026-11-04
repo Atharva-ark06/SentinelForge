@@ -9,11 +9,13 @@ from sentinelforge import api
 def isolated_database(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     db_path = tmp_path / "sentinelforge-test.sqlite3"
     monkeypatch.setattr(api, "DB_PATH", db_path)
+    monkeypatch.setattr(api, "API_KEY", "test-secret")
     yield
 
 
 def test_health():
     with TestClient(api.app) as client:
+        client.headers.update({"X-API-Key": "test-secret"})
         response = client.get("/health")
         assert response.status_code == 200
         assert response.json()["status"] == "ok"
