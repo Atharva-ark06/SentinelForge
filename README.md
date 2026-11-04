@@ -236,3 +236,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 21 — dashboard component notes -->
 
 <!-- Contribution log 22 — frontend tooling -->
+
+<!-- Contribution log 23 — Python setup notes -->
