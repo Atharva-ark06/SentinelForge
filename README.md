@@ -206,3 +206,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 06 — defensive monitoring explanation -->
 
 <!-- Contribution log 07 — maintainability notes -->
+
+<!-- Contribution log 08 — local-first architecture -->
