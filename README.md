@@ -252,3 +252,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 29 — workflow automation -->
 
 <!-- Contribution log 30 — onboarding -->
+
+<!-- Contribution log 31 — CI responsibilities -->
