@@ -244,3 +244,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 25 — synthetic telemetry -->
 
 <!-- Contribution log 26 — security boundaries -->
+
+<!-- Contribution log 27 — architecture clarity -->
