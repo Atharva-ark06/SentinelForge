@@ -282,3 +282,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 44 — CORS configuration -->
 
 <!-- Contribution log 45 — trusted host configuration -->
+
+<!-- Contribution log 46 — threat assumptions -->
