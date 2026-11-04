@@ -268,3 +268,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 37 — security control mapping -->
 
 <!-- Contribution log 38 — auditability -->
+
+<!-- Contribution log 39 — dependency review -->
