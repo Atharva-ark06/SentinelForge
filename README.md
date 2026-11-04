@@ -218,3 +218,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 12 — demo data description -->
 
 <!-- Contribution log 13 — event flow documentation -->
+
+<!-- Contribution log 14 — reproducibility notes -->
