@@ -280,3 +280,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 43 — response header controls -->
 
 <!-- Contribution log 44 — CORS configuration -->
+
+<!-- Contribution log 45 — trusted host configuration -->
