@@ -278,3 +278,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 42 — API hardening notes -->
 
 <!-- Contribution log 43 — response header controls -->
+
+<!-- Contribution log 44 — CORS configuration -->
