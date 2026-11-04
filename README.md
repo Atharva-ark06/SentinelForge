@@ -208,3 +208,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 07 — maintainability notes -->
 
 <!-- Contribution log 08 — local-first architecture -->
+
+<!-- Contribution log 09 — test expectations -->
