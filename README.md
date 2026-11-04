@@ -242,3 +242,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 24 — SQLite persistence -->
 
 <!-- Contribution log 25 — synthetic telemetry -->
+
+<!-- Contribution log 26 — security boundaries -->
