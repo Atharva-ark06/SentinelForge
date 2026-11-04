@@ -256,3 +256,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 31 — CI responsibilities -->
 
 <!-- Contribution log 32 — static hosting -->
+
+<!-- Contribution log 33 — Pages configuration -->
