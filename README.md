@@ -234,3 +234,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 20 — safe lab operations -->
 
 <!-- Contribution log 21 — dashboard component notes -->
+
+<!-- Contribution log 22 — frontend tooling -->
