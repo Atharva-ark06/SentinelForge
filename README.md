@@ -194,3 +194,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 
 
 <!-- Contribution log 01 — project scope documentation -->
+
+<!-- Contribution log 02 — baseline behavior documentation -->
