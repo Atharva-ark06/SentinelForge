@@ -198,3 +198,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 02 — baseline behavior documentation -->
 
 <!-- Contribution log 03 — repository navigation improvement -->
+
+<!-- Contribution log 04 — setup clarification -->
