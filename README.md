@@ -290,3 +290,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 48 — recovery planning -->
 
 <!-- Contribution log 49 — verification gate -->
+
+<!-- Contribution log 50 — README change ledger completed -->
