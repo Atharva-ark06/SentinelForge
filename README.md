@@ -224,3 +224,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 15 — detection rule documentation -->
 
 <!-- Contribution log 16 — alert evidence -->
+
+<!-- Contribution log 17 — false-positive context -->
