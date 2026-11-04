@@ -286,3 +286,5 @@ See [`docs/roadmap.md`](docs/roadmap.md) for completed work and future hardening
 <!-- Contribution log 46 — threat assumptions -->
 
 <!-- Contribution log 47 — response readiness -->
+
+<!-- Contribution log 48 — recovery planning -->
