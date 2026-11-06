@@ -5,3 +5,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Confirm the API rejects POST /events when X-API-Key is absent.
 - [ ] Confirm the API rejects POST /demo/run when X-API-Key is absent.
 - [ ] Confirm incorrect API keys return HTTP 401.
+- [ ] Confirm API-key comparisons use constant-time comparison.
