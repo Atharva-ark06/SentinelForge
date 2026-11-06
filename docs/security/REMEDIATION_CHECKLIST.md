@@ -13,3 +13,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Restrict production CORS origins to the exact deployed frontend origin.
 - [ ] Restrict trusted hosts to the actual API hostnames.
 - [ ] Disable interactive API documentation in production deployments.
+- [ ] Set explicit request-body size limits for event ingestion.
