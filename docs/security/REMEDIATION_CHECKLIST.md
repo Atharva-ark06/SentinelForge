@@ -15,3 +15,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Disable interactive API documentation in production deployments.
 - [ ] Set explicit request-body size limits for event ingestion.
 - [ ] Validate event field lengths before persistence.
+- [ ] Reject unexpected event fields where strict validation is appropriate.
