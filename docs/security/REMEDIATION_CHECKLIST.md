@@ -16,3 +16,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Set explicit request-body size limits for event ingestion.
 - [ ] Validate event field lengths before persistence.
 - [ ] Reject unexpected event fields where strict validation is appropriate.
+- [ ] Add per-client rate limits to write endpoints.
