@@ -20,3 +20,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Return a consistent 429 response when a rate limit is exceeded.
 - [ ] Add tests for missing, incorrect, and valid API-key cases.
 - [ ] Add tests for oversized event payloads.
+- [ ] Add tests for malformed event payloads.
