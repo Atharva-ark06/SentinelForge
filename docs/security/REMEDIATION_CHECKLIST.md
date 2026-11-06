@@ -40,3 +40,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Restrict access to the SQLite database and its backups.
 - [ ] Use synthetic examples in public screenshots and demo datasets.
 - [ ] Document a backup and restore procedure for the event database.
+- [ ] Add a dependency vulnerability review step to the maintenance process.
