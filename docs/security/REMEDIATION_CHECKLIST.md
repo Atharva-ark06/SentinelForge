@@ -37,3 +37,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Define a retention period for event and alert records.
 - [ ] Document the personal data collected by telemetry fields.
 - [ ] Minimize usernames, hostnames, and source-address retention where feasible.
+- [ ] Restrict access to the SQLite database and its backups.
