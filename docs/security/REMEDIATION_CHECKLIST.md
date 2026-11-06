@@ -28,3 +28,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Use bounded network timeouts for sensor-to-API requests.
 - [ ] Retry transient sensor failures with capped exponential backoff.
 - [ ] Avoid retrying permanent authentication failures indefinitely.
+- [ ] Persist sensor checkpoints atomically to avoid corrupt state after interruption.
