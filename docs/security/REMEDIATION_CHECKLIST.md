@@ -30,3 +30,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Avoid retrying permanent authentication failures indefinitely.
 - [ ] Persist sensor checkpoints atomically to avoid corrupt state after interruption.
 - [ ] Restrict Windows event collection to the documented event IDs.
+- [ ] Document the minimum Windows audit policy required by the sensor.
