@@ -24,3 +24,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Add tests for CORS preflight behavior.
 - [ ] Add tests for disallowed Host headers.
 - [ ] Ensure sensor ingestion sends its credential through a protected server-side configuration.
+- [ ] Never print the sensor API key to stdout or log files.
