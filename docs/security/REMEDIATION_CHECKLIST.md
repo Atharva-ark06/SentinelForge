@@ -22,3 +22,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Add tests for oversized event payloads.
 - [ ] Add tests for malformed event payloads.
 - [ ] Add tests for CORS preflight behavior.
+- [ ] Add tests for disallowed Host headers.
