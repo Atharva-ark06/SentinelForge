@@ -49,3 +49,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Scan all reachable Git history and branches for accidentally committed secrets.
 - [ ] Rotate any credential found in repository history before considering cleanup complete.
 - [ ] Document responsible disclosure and a private security contact path.
+- [ ] Record security-relevant changes in a dated changelog.
