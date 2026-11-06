@@ -36,3 +36,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Do not embed a shared API secret in browser JavaScript.
 - [ ] Define a retention period for event and alert records.
 - [ ] Document the personal data collected by telemetry fields.
+- [ ] Minimize usernames, hostnames, and source-address retention where feasible.
