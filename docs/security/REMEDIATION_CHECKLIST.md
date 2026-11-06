@@ -34,3 +34,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Make the frontend demo clearly report when no backend is configured.
 - [ ] Keep frontend demo mode local-only unless a secure server-side trigger exists.
 - [ ] Do not embed a shared API secret in browser JavaScript.
+- [ ] Define a retention period for event and alert records.
