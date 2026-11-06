@@ -26,3 +26,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Ensure sensor ingestion sends its credential through a protected server-side configuration.
 - [ ] Never print the sensor API key to stdout or log files.
 - [ ] Use bounded network timeouts for sensor-to-API requests.
+- [ ] Retry transient sensor failures with capped exponential backoff.
