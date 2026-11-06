@@ -46,3 +46,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Use pull-request checks before publishing GitHub Pages.
 - [ ] Keep deployment credentials in GitHub Actions secrets, never repository files.
 - [ ] Run a repository-wide secret scan before each release.
+- [ ] Scan all reachable Git history and branches for accidentally committed secrets.
