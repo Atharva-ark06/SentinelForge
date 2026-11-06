@@ -9,3 +9,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Keep API secrets exclusively in server-side environment variables.
 - [ ] Do not place private credentials in VITE_* variables or frontend bundles.
 - [ ] Document separate hosting requirements for the static Pages frontend and FastAPI backend.
+- [ ] Require HTTPS for any remotely reachable API deployment.
