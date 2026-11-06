@@ -51,3 +51,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Document responsible disclosure and a private security contact path.
 - [ ] Record security-relevant changes in a dated changelog.
 - [ ] Verify that production error responses do not expose stack traces or secrets.
+- [ ] Review security controls after dependency and framework upgrades.
