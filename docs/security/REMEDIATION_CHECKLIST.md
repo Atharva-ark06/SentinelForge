@@ -11,3 +11,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Document separate hosting requirements for the static Pages frontend and FastAPI backend.
 - [ ] Require HTTPS for any remotely reachable API deployment.
 - [ ] Restrict production CORS origins to the exact deployed frontend origin.
+- [ ] Restrict trusted hosts to the actual API hostnames.
