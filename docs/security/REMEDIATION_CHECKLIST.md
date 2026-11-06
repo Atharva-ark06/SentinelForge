@@ -44,3 +44,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Pin third-party GitHub Actions to verified full commit SHAs.
 - [ ] Grant workflow jobs only the permissions they require.
 - [ ] Use pull-request checks before publishing GitHub Pages.
+- [ ] Keep deployment credentials in GitHub Actions secrets, never repository files.
