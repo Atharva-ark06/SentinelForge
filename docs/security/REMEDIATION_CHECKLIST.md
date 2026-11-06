@@ -32,3 +32,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Restrict Windows event collection to the documented event IDs.
 - [ ] Document the minimum Windows audit policy required by the sensor.
 - [ ] Make the frontend demo clearly report when no backend is configured.
+- [ ] Keep frontend demo mode local-only unless a secure server-side trigger exists.
