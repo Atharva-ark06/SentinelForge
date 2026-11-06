@@ -33,3 +33,4 @@ This file tracks the remediation work associated with [issue #17](../../issues/1
 - [ ] Document the minimum Windows audit policy required by the sensor.
 - [ ] Make the frontend demo clearly report when no backend is configured.
 - [ ] Keep frontend demo mode local-only unless a secure server-side trigger exists.
+- [ ] Do not embed a shared API secret in browser JavaScript.
