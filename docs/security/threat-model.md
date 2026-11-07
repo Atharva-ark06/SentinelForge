@@ -1,0 +1,3 @@
+# Threat model
+
+Assets: ingestion credentials, telemetry, alert evidence, database integrity, deployment pipeline. Threats include unauthorized ingestion, unauthorized read access, credential leakage, database loss, malicious payloads and compromised CI dependencies. Current known gap: event and alert read endpoints are unauthenticated. Mitigate with authentication/authorization, input limits, rate limiting, persistent encrypted storage and least-privilege CI.

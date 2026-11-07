@@ -69,7 +69,7 @@ npm install
 npm run dev
 ```
 
-Vite normally serves `http://127.0.0.1:5173` and proxies API routes to the local FastAPI process.
+Vite normally serves `http://127.0.0.1:5173` and proxies API routes to the local FastAPI process. For a remote Pages deployment, configure the separate API and `VITE_API_BASE_URL` as described in [Deployment](docs/deployment.md).
 
 ### Synthetic demo
 
@@ -94,6 +94,7 @@ The sensor reads Security Event IDs **4624** (successful logon) and **4625** (fa
 ```powershell
 # Run from repository root; elevated PowerShell may be required
 .\.venv\Scripts\Activate.ps1
+$env:SENTINELFORGE_API_KEY = "your_configured_api_key"
 python .\scripts\windows_sensor.py
 python .\scripts\windows_sensor.py --once
 python .\scripts\windows_sensor.py --interval 5
@@ -194,11 +195,23 @@ Read-only endpoints (`GET /health`, `GET /events`, `GET /alerts`) do not require
 
 ## GitHub Pages
 
-The `.github/workflows/pages.yml` workflow builds and deploys the **static React frontend** from `main`. Pages does not host FastAPI, SQLite, or the Windows sensor. Live API functionality requires a separately deployed API over HTTPS with secure configuration.
+The `.github/workflows/pages.yml` workflow builds and deploys the **static React frontend** from `main`. Pages does not host FastAPI, SQLite, or the Windows sensor. Live API functionality requires a separately deployed API over HTTPS with secure configuration. Set the repository Actions variable `VITE_API_BASE_URL` to the public API origin (for example `https://api.example.com`, without a trailing slash); the value is public and must never contain a secret. Configure the API CORS origin and allowed host values on the backend host. See [Deployment](docs/deployment.md) for the complete setup and troubleshooting steps.
 
 After merge, select **Settings → Pages → Build and deployment → GitHub Actions**.
 
 Project site: **https://atharva-ark06.github.io/SentinelForge/**
+
+## Documentation hub
+
+- [Architecture overview](docs/architecture/overview.md)
+- [Deployment and dashboard troubleshooting](docs/deployment.md)
+- [Production readiness checklist](docs/operations/production-readiness.md)
+- [Incident response workflow](docs/operations/incident-response.md)
+- [Detection rule guides](docs/detections/)
+- [Analyst playbooks](docs/playbooks/)
+- [Security and privacy guidance](docs/security/)
+- [Testing strategy](docs/testing/test-strategy.md)
+- [Contribution and release checklists](docs/development/)
 
 ## Security and risk management
 
