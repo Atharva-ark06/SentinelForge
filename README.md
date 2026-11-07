@@ -201,6 +201,18 @@ After merge, select **Settings → Pages → Build and deployment → GitHub Act
 
 Project site: **https://atharva-ark06.github.io/SentinelForge/**
 
+## Documentation hub
+
+- [Architecture overview](docs/architecture/overview.md)
+- [Deployment and dashboard troubleshooting](docs/deployment.md)
+- [Production readiness checklist](docs/operations/production-readiness.md)
+- [Incident response workflow](docs/operations/incident-response.md)
+- [Detection rule guides](docs/detections/)
+- [Analyst playbooks](docs/playbooks/)
+- [Security and privacy guidance](docs/security/)
+- [Testing strategy](docs/testing/test-strategy.md)
+- [Contribution and release checklists](docs/development/)
+
 ## Security and risk management
 
 The [risk register](docs/security-risk-register.md) documents likelihood × impact scoring, controls, treatment, residual risk, and a deployment gate mapped for learning to:
