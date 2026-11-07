@@ -23,6 +23,7 @@ def test_health():
 
 def test_ingests_event_and_lists_it():
     with TestClient(api.app) as client:
+        client.headers.update({"X-API-Key": "test-secret"})
         response = client.post("/events", json={
             "timestamp": "2026-10-28T10:00:00Z", "event_type": "login_success",
             "username": "alice", "source_ip": "192.0.2.1", "host": "lab01",
@@ -36,6 +37,7 @@ def test_ingests_event_and_lists_it():
 
 def test_repeated_failures_generate_explainable_alert():
     with TestClient(api.app) as client:
+        client.headers.update({"X-API-Key": "test-secret"})
         for i in range(5):
             response = client.post("/events", json={
                 "timestamp": f"2026-10-28T10:0{i}:00Z", "event_type": "login_failure",
@@ -60,6 +62,7 @@ def test_rejects_invalid_ip_and_naive_timestamp():
 
 def test_multi_account_source_rule():
     with TestClient(api.app) as client:
+        client.headers.update({"X-API-Key": "test-secret"})
         for i, username in enumerate(["alice", "bob", "charlie"]):
             response = client.post("/events", json={
                 "timestamp": f"2026-10-28T11:0{i}:00Z", "event_type": "login_failure",
