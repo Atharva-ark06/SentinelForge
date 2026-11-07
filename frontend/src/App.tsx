@@ -6,7 +6,7 @@ type EventRow={id:number;timestamp:string;event_type:string;username:string;sour
 type AlertRow={id:number;rule_id:string;title:string;severity:string;description:string;evidence:number[];source_ip:string;username:string|null;first_seen:string;last_seen:string};
 type Health={status:string;service:string;time:string};
 type Page="Overview"|"Alerts"|"Events"|"Detection Rules";
-const API_BASE_URL=(import.meta.env.VITE_API_BASE_URL??"").trim().replace(/\\/+$/,"");
+const API_BASE_URL=(import.meta.env.VITE_API_BASE_URL??"").trim().replace(/\/+$/,"");
 const apiUrl=(path:string)=>API_BASE_URL+path;
 const nav:{name:Page;icon:typeof LayoutDashboard}[]=[{name:"Overview",icon:LayoutDashboard},{name:"Alerts",icon:ShieldAlert},{name:"Events",icon:Activity},{name:"Detection Rules",icon:FileSearch}];
 const rules=[{id:"SF-AUTH-001",name:"Repeated authentication failures",trigger:"At least 5 failed logins for the same username and source IP within a 10-minute lookback.",meaning:"May indicate password guessing."},{id:"SF-AUTH-002",name:"One source accessed multiple accounts",trigger:"At least 3 distinct usernames associated with one source IP within a 10-minute lookback.",meaning:"May indicate password spraying or account enumeration."}];
