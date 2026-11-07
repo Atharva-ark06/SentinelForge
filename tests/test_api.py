@@ -77,3 +77,22 @@ def test_rejects_unknown_fields():
             "password": "should-not-be-accepted",
         })
         assert response.status_code == 422
+
+
+def test_ingestion_fails_closed_without_configured_key(monkeypatch):
+    monkeypatch.setattr(api, "API_KEY", "")
+    with TestClient(api.app) as client:
+        response = client.post("/events", json={
+            "timestamp": "2026-10-28T10:00:00Z", "event_type": "login_success",
+            "username": "alice", "source_ip": "192.0.2.1", "host": "lab01",
+        })
+        assert response.status_code == 503
+
+
+def test_ingestion_rejects_wrong_api_key():
+    with TestClient(api.app) as client:
+        response = client.post("/events", headers={"X-API-Key": "wrong-key"}, json={
+            "timestamp": "2026-10-28T10:00:00Z", "event_type": "login_success",
+            "username": "alice", "source_ip": "192.0.2.1", "host": "lab01",
+        })
+        assert response.status_code == 401
