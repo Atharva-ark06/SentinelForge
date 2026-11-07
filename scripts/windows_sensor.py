@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import ipaddress
 import json
+import os
 import subprocess
 import sys
 import time
@@ -18,6 +19,7 @@ from pathlib import Path
 from typing import Any
 
 DEFAULT_API_URL = "http://127.0.0.1:8000/events"
+DEFAULT_API_KEY = os.environ.get("SENTINELFORGE_API_KEY", "").strip()
 DEFAULT_INTERVAL = 10
 MAX_EVENTS = 250
 DEFAULT_STATE_FILE = Path(__file__).resolve().parent / ".sentinelforge_sensor_state.json"
@@ -135,7 +137,7 @@ def eligible_event(event: dict[str, Any]) -> tuple[bool, str]:
     return True, "eligible"
 
 
-def send_event(event: dict[str, Any], api_url: str) -> bool:
+def send_event(event: dict[str, Any], api_url: str, api_key: str) -> bool:
     payload = {
         "timestamp": event["timestamp"],
         "event_type": "login_success" if event["event_id"] == 4624 else "login_failure",
@@ -146,7 +148,7 @@ def send_event(event: dict[str, Any], api_url: str) -> bool:
     request = urllib.request.Request(
         api_url,
         data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
+        headers={"Content-Type": "application/json", "X-API-Key": api_key},
         method="POST",
     )
     try:
@@ -188,7 +190,7 @@ def process_events(last_record_id: int, events: list[dict[str, Any]], state_file
             save_checkpoint(state_file, current_id)
             skipped += 1
             continue
-        if not send_event(event, api_url):
+        if not send_event(event, api_url, api_key):
             # Do not advance beyond a failed send: retry this record next poll.
             return current_id, sent, skipped
         current_id = record_id
@@ -222,9 +224,12 @@ def main() -> int:
     parser.add_argument("--once", action="store_true", help="Poll once and exit")
     parser.add_argument("--api-url", default=DEFAULT_API_URL, help=f"Event endpoint (default: {DEFAULT_API_URL})")
     parser.add_argument("--state-file", type=Path, default=DEFAULT_STATE_FILE, help="Checkpoint file path")
+    parser.add_argument("--api-key", default=DEFAULT_API_KEY, help="Ingestion key (prefer SENTINELFORGE_API_KEY environment variable)")
     args = parser.parse_args()
     if args.interval < 1:
         parser.error("--interval must be at least 1 second")
+    if not args.api_key.strip():
+        parser.error("Set SENTINELFORGE_API_KEY or pass --api-key; the sensor will not send unauthenticated events.")
 
     try:
         last_record_id = load_checkpoint(args.state_file)
