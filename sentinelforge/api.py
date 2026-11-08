@@ -29,7 +29,7 @@ app = FastAPI(title="SentinelForge API", description="Educational defensive even
     redoc_url=None)
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=ALLOWED_HOSTS)
 app.add_middleware(CORSMiddleware, allow_origins=ALLOWED_ORIGINS, allow_credentials=False,
-    allow_methods=["GET", "POST"], allow_headers=["Content-Type", "X-API-Key"])
+    allow_methods=["GET", "POST", "PATCH"], allow_headers=["Content-Type", "X-API-Key"])
 
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
