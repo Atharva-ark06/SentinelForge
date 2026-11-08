@@ -6,6 +6,13 @@ from typing import Any
 
 DEFAULT_DB = Path(os.environ.get("SENTINELFORGE_DB", "sentinelforge.sqlite3"))
 ALERT_STATUSES = {"new", "acknowledged", "investigating", "resolved", "false_positive"}
+ALERT_TRANSITIONS = {
+    "new": {"acknowledged", "investigating", "resolved", "false_positive"},
+    "acknowledged": {"new", "investigating", "resolved", "false_positive"},
+    "investigating": {"acknowledged", "resolved", "false_positive"},
+    "resolved": {"new", "investigating"},
+    "false_positive": {"new"},
+}
 
 
 def connect(db_path: str | Path | None = None) -> sqlite3.Connection:
