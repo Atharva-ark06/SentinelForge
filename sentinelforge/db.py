@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 DEFAULT_DB = Path(os.environ.get("SENTINELFORGE_DB", "sentinelforge.sqlite3"))
+ALERT_STATUSES = {"new", "acknowledged", "investigating", "resolved", "false_positive"}
 
 
 def connect(db_path: str | Path | None = None) -> sqlite3.Connection:
@@ -13,6 +14,7 @@ def connect(db_path: str | Path | None = None) -> sqlite3.Connection:
     connection = sqlite3.connect(path, timeout=10)
     connection.row_factory = sqlite3.Row
     connection.execute("PRAGMA foreign_keys = ON")
+    connection.execute("PRAGMA busy_timeout = 10000")
     return connection
 
 
@@ -59,6 +61,24 @@ def init_db(db_path: str | Path | None = None) -> None:
         );
         CREATE INDEX IF NOT EXISTS idx_alerts_last_seen ON alerts(last_seen);
         """)
+        # Additive migrations preserve existing SQLite databases.
+        alert_columns = {row["name"] for row in conn.execute("PRAGMA table_info(alerts)")}
+        if "status" not in alert_columns:
+            conn.execute("ALTER TABLE alerts ADD COLUMN status TEXT NOT NULL DEFAULT 'new'")
+        if "updated_at" not in alert_columns:
+            conn.execute("ALTER TABLE alerts ADD COLUMN updated_at TEXT")
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS alert_activity (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                alert_id INTEGER NOT NULL REFERENCES alerts(id) ON DELETE CASCADE,
+                previous_status TEXT,
+                new_status TEXT NOT NULL,
+                actor TEXT NOT NULL,
+                note TEXT NOT NULL DEFAULT '',
+                created_at TEXT NOT NULL
+            )
+        """)
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_alert_activity_alert ON alert_activity(alert_id, id)")
 
 
 def insert_event(event: dict[str, Any], db_path: str | Path | None = None) -> int:
@@ -72,19 +92,51 @@ def insert_event(event: dict[str, Any], db_path: str | Path | None = None) -> in
         return int(cur.lastrowid)
 
 
-def list_events(limit: int = 100, db_path: str | Path | None = None) -> list[dict[str, Any]]:
+def _filters(clauses: list[str], values: list[Any], *, event_type=None,
+             username=None, source_ip=None, start=None, end=None):
+    if event_type:
+        clauses.append("event_type = ?"); values.append(event_type)
+    if username:
+        clauses.append("username LIKE ?"); values.append(f"%{username}%")
+    if source_ip:
+        clauses.append("source_ip = ?"); values.append(source_ip)
+    if start:
+        clauses.append("timestamp >= ?"); values.append(start)
+    if end:
+        clauses.append("timestamp <= ?"); values.append(end)
+
+
+def list_events(limit: int = 100, db_path: str | Path | None = None, *,
+                offset: int = 0, event_type: str | None = None,
+                username: str | None = None, source_ip: str | None = None,
+                start: str | None = None, end: str | None = None) -> list[dict[str, Any]]:
+    clauses: list[str] = []
+    values: list[Any] = []
+    _filters(clauses, values, event_type=event_type, username=username,
+             source_ip=source_ip, start=start, end=end)
+    where = " WHERE " + " AND ".join(clauses) if clauses else ""
+    values.extend([limit, offset])
     with connection(db_path) as conn:
         rows = conn.execute(
-            "SELECT * FROM events ORDER BY timestamp DESC, id DESC LIMIT ?", (limit,)
+            f"SELECT * FROM events{where} ORDER BY timestamp DESC, id DESC LIMIT ? OFFSET ?", values
         ).fetchall()
         return [dict(row) for row in rows]
 
 
-def list_alerts(limit: int = 100, db_path: str | Path | None = None) -> list[dict[str, Any]]:
+def list_alerts(limit: int = 100, db_path: str | Path | None = None, *,
+                offset: int = 0, severity: str | None = None,
+                status: str | None = None, source_ip: str | None = None) -> list[dict[str, Any]]:
     import json
+    clauses: list[str] = []
+    values: list[Any] = []
+    for field, value in (("severity", severity), ("status", status), ("source_ip", source_ip)):
+        if value:
+            clauses.append(f"{field} = ?"); values.append(value)
+    where = " WHERE " + " AND ".join(clauses) if clauses else ""
+    values.extend([limit, offset])
     with connection(db_path) as conn:
         rows = conn.execute(
-            "SELECT * FROM alerts ORDER BY last_seen DESC, id DESC LIMIT ?", (limit,)
+            f"SELECT * FROM alerts{where} ORDER BY last_seen DESC, id DESC LIMIT ? OFFSET ?", values
         ).fetchall()
         output = []
         for row in rows:
@@ -108,3 +160,59 @@ def insert_alert(alert: dict[str, Any], db_path: str | Path | None = None) -> bo
              alert["last_seen"]),
         )
         return cur.rowcount == 1
+
+
+def update_alert_status(alert_id: int, new_status: str, actor: str, note: str = "",
+                        db_path: str | Path | None = None) -> dict[str, Any] | None:
+    from datetime import datetime, timezone
+    if new_status not in ALERT_STATUSES:
+        raise ValueError("Unsupported alert status")
+    if not actor.strip() or len(actor) > 128:
+        raise ValueError("actor must contain 1-128 non-whitespace characters")
+    if len(note) > 1000:
+        raise ValueError("note must be 1000 characters or fewer")
+    now = datetime.now(timezone.utc).isoformat()
+    with connection(db_path) as conn:
+        row = conn.execute("SELECT status FROM alerts WHERE id = ?", (alert_id,)).fetchone()
+        if row is None:
+            return None
+        previous = row["status"]
+        conn.execute("UPDATE alerts SET status = ?, updated_at = ? WHERE id = ?",
+                     (new_status, now, alert_id))
+        conn.execute("""INSERT INTO alert_activity
+            (alert_id, previous_status, new_status, actor, note, created_at)
+            VALUES (?, ?, ?, ?, ?, ?)""",
+            (alert_id, previous, new_status, actor.strip(), note.strip(), now))
+        updated = conn.execute("SELECT * FROM alerts WHERE id = ?", (alert_id,)).fetchone()
+        item = dict(updated)
+        item["evidence"] = json.loads(item.pop("evidence_json"))
+        return item
+
+
+def list_alert_activity(alert_id: int, db_path: str | Path | None = None) -> list[dict[str, Any]]:
+    with connection(db_path) as conn:
+        rows = conn.execute(
+            """SELECT id, alert_id, previous_status, new_status, actor, note, created_at
+               FROM alert_activity WHERE alert_id = ? ORDER BY id DESC""", (alert_id,)
+        ).fetchall()
+        return [dict(row) for row in rows]
+
+
+def get_metrics(db_path: str | Path | None = None) -> dict[str, Any]:
+    with connection(db_path) as conn:
+        event_total = conn.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+        event_counts = {row["event_type"]: row["count"] for row in conn.execute(
+            "SELECT event_type, COUNT(*) AS count FROM events GROUP BY event_type")}
+        alert_total = conn.execute("SELECT COUNT(*) FROM alerts").fetchone()[0]
+        alert_counts = {row["severity"]: row["count"] for row in conn.execute(
+            "SELECT severity, COUNT(*) AS count FROM alerts GROUP BY severity")}
+        status_counts = {row["status"]: row["count"] for row in conn.execute(
+            "SELECT status, COUNT(*) AS count FROM alerts GROUP BY status")}
+        latest_event = conn.execute("SELECT MAX(timestamp) FROM events").fetchone()[0]
+        latest_alert = conn.execute("SELECT MAX(last_seen) FROM alerts").fetchone()[0]
+    return {
+        "events": {"total": event_total, "by_type": event_counts,
+                   "latest_at": latest_event},
+        "alerts": {"total": alert_total, "by_severity": alert_counts,
+                   "by_status": status_counts, "latest_at": latest_alert},
+    }
