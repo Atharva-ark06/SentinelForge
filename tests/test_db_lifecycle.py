@@ -80,7 +80,7 @@ def test_alert_lifecycle_persists_status_and_actor_history(database):
     assert len(history) == 1
     assert history[0]["previous_status"] == "new"
     assert history[0]["new_status"] == "acknowledged"
-    assert history[0]["actor"] == "analyst-a"
+    assert history[0]["actor"] == "analyst-a"\n    with pytest.raises(ValueError, match="Cannot move alert"):\n        update_alert_status(1, "new", "analyst-a", "invalid backward transition", database)
 
 
 def test_alert_status_validation_is_fail_closed(database):
