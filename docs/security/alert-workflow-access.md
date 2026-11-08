@@ -1,0 +1,3 @@
+# Alert workflow access control
+
+The status mutation endpoint is protected by the existing shared ingestion key. This is machine-to-machine authentication, not user identity, role-based authorization or analyst SSO. The actor string in the request is an audit label supplied by that trusted client and can be spoofed by anyone holding the shared key. Use a secret manager and rotate the key; add per-user authentication/RBAC before treating the workflow as a production case-management system.

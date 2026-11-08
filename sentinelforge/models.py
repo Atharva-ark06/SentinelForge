@@ -54,3 +54,26 @@ class AlertOut(BaseModel):
     username: str | None
     first_seen: datetime
     last_seen: datetime
+
+
+class AlertStatusUpdate(BaseModel):
+    """Validated request to move an alert through its investigation lifecycle."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    status: Literal["new", "acknowledged", "investigating", "resolved", "false_positive"]
+    actor: str = Field(min_length=1, max_length=128)
+    note: str = Field(default="", max_length=1000)
+
+    @field_validator("actor")
+    @classmethod
+    def actor_must_not_be_blank(cls, value: str) -> str:
+        cleaned = value.strip()
+        if not cleaned:
+            raise ValueError("actor cannot be blank")
+        return cleaned
+
+    @field_validator("note")
+    @classmethod
+    def trim_note(cls, value: str) -> str:
+        return value.strip()

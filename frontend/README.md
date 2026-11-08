@@ -49,3 +49,17 @@ python .\scripts\load_demo.py
 - Detection rule cards describe the two implemented rules in `sentinelforge/detection.py`.
 - The Windows sensor authenticates using `SENTINELFORGE_API_KEY` from its process environment.
 - Verify frontend changes with `npm install` and `npm run build`.
+
+
+## Alert lifecycle and analytics UI
+
+The dashboard reads database-wide totals from `GET /metrics`; event and alert tables remain bounded to the latest 250 rows returned to the browser. The event chart is therefore a recent sample, while the metric cards represent the complete database.
+
+Alert rows display the persisted workflow status (`new`, `acknowledged`, `investigating`, `resolved`, or `false_positive`). Status changes are intentionally not performed from the static browser because it must not contain the shared API key. Use the trusted backend CLI:
+
+```powershell
+$env:SENTINELFORGE_API_KEY = "your_backend_key"
+python .\scripts\manage_alert.py --alert-id 1 --status acknowledged --actor "analyst-id"
+```
+
+Refresh the dashboard to see the updated state. The API's activity endpoint exposes the transition history. The actor value is a caller-supplied audit label, not verified user identity.
