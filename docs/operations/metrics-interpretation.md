@@ -1,0 +1,3 @@
+# Interpreting dashboard metrics
+
+Dashboard totals come from `GET /metrics` and cover the complete database. Event charts still use the latest event records fetched by the frontend, so chart shape represents a recent sample rather than a full historical aggregation. Alert severity and workflow counts are database-wide. Do not compare sampled chart totals to database-wide counters as if they had identical scope.
