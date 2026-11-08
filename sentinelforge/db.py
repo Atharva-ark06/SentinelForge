@@ -185,6 +185,10 @@ def update_alert_status(alert_id: int, new_status: str, actor: str, note: str = 
         if row is None:
             return None
         previous = row["status"]
+        if new_status == previous:
+            raise ValueError("Alert already has this status")
+        if new_status not in ALERT_TRANSITIONS.get(previous, set()):
+            raise ValueError(f"Cannot move alert from {previous} to {new_status}")
         conn.execute("UPDATE alerts SET status = ?, updated_at = ? WHERE id = ?",
                      (new_status, now, alert_id))
         conn.execute("""INSERT INTO alert_activity
