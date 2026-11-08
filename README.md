@@ -16,7 +16,9 @@
 
 ## Capabilities
 
-- SOC dashboard: overview, alerts, authentication events, and detection rules
+- SOC dashboard: overview, alerts, authentication events, detection rules, and database-wide metrics
+- Alert investigation lifecycle with audited status transitions and analyst notes
+- Filtered, offset-paginated event and alert APIs
 - FastAPI REST API with validated event ingestion and health endpoint
 - SQLite persistence for normalized event records and alert evidence
 - Explainable rules for repeated authentication failures and multi-account source activity
@@ -107,12 +109,27 @@ It establishes a first-run baseline, skips older records, and omits events with 
 | Method | Endpoint | Description |
 |---|---|---|
 | GET | `/health` | Service health |
-| GET | `/events?limit=100` | Events (limit 1–1000) |
-| GET | `/alerts?limit=100&severity=medium` | Alerts with optional severity filter |
+| GET | `/events?limit=100&offset=0` | Filtered/paginated events (type, username, source IP, time range) |
+| GET | `/metrics` | Database-wide event and alert totals, severity and status counts |
+| GET | `/alerts?limit=100&offset=0&severity=medium&status=new` | Filtered/paginated alerts |\n| GET | `/alerts/{id}/activity` | Alert status transition history |\n| PATCH | `/alerts/{id}/status` | Change alert status; requires `X-API-Key` |
 | POST | `/events` | Ingest validated event; requires `X-API-Key` |
 | POST | `/demo/run` | Generate synthetic events; requires `X-API-Key` |
 
-Write endpoints require `SENTINELFORGE_API_KEY`. If it is not configured, ingestion fails closed with HTTP 503. Configure exact origins and hostnames for deployments; see [Security Risk Register](docs/security-risk-register.md).
+Write endpoints and alert status changes require `SENTINELFORGE_API_KEY`. If it is not configured, protected operations fail closed with HTTP 503. Configure exact origins and hostnames for deployments; see [Security Risk Register](docs/security-risk-register.md).
+
+## Alert investigation workflow
+
+Alerts begin in `new`. Analysts can move them through `acknowledged`, `investigating`, `resolved`, and `false_positive` using the authenticated API or CLI. Every successful transition is stored in `alert_activity`. Existing SQLite databases are upgraded additively at startup; back up production data before deploying schema changes.
+
+Set `SENTINELFORGE_API_KEY` and run:
+
+```powershell
+python .\scripts\manage_alert.py --alert-id 1 --status acknowledged --actor "analyst-id" --note "Initial triage"
+```
+
+See [lifecycle overview](docs/alerts/lifecycle-overview.md), [allowed transitions](docs/alerts/status-transitions.md), [audit history](docs/alerts/audit-history.md), and [CLI guide](docs/development/alert-workflow-cli.md).
+
+**Attribution limitation:** `actor` is a caller-supplied label protected by the shared machine key; it is not a verified user identity. The API still has unauthenticated read endpoints. Use synthetic data only on public deployments until user authentication and read authorization are implemented.
 
 ## Tests and build
 
@@ -189,7 +206,7 @@ $headers = @{ "X-API-Key" = $env:SENTINELFORGE_API_KEY }
 Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8000/demo/run" -Headers $headers
 ```
 
-Read-only endpoints (`GET /health`, `GET /events`, `GET /alerts`) do not require the key. If the API key is missing, write operations fail closed; a wrong key returns `401`.
+Read-only endpoints (`GET /health`, `GET /events`, `GET /alerts`, `GET /metrics` and alert activity) do not require the key. If the API key is missing, write operations fail closed; a wrong key returns `401`.
 
 **Never** put secrets in frontend source code, `VITE_*` variables, GitHub Pages, screenshots, or committed files. GitHub Pages serves only static frontend assets and cannot securely hold a private API key. For a remotely hosted API, use the host's secret/environment-variable settings, HTTPS, and exact production origin/host allowlists; do not expose the API directly to the public internet without additional controls.
 
