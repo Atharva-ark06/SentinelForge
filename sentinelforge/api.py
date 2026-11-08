@@ -8,9 +8,9 @@ from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
-from .db import init_db, insert_event, insert_alert, list_events, list_alerts
+from .db import (init_db, insert_event, insert_alert, list_events, list_alerts,\n                 get_metrics, update_alert_status, list_alert_activity)
 from .detection import evaluate_new_event
-from .models import SecurityEventIn
+from .models import SecurityEventIn, AlertStatusUpdate
 
 DB_PATH = Path(os.environ.get("SENTINELFORGE_DB", "sentinelforge.sqlite3"))
 DASHBOARD_PATH = Path(__file__).resolve().parent.parent / "dashboard.html"
