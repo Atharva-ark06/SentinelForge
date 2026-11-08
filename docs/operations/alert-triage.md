@@ -1,0 +1,3 @@
+# Operational guide: alert triage
+
+Start with the rule ID and evidence event IDs. Confirm the time range, source address, target username(s), host and surrounding successful/failed events. Check expected VPN, proxy, NAT, shared workstation and maintenance behavior. Record the rationale in an activity note, then move the alert to investigating, resolved or false_positive as appropriate. Do not infer compromise from a rule match alone.
