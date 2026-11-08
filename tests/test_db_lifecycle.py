@@ -50,7 +50,7 @@ def sample_alert():
 def test_event_queries_apply_filter_and_offset(database):
     for i in range(5):
         insert_event(sample_event(i, "alice" if i % 2 == 0 else "bob"), database)
-    rows = list_events(2, database, offset=1, username="ali")
+    rows = list_events(2, database, offset=2, username="ali")
     assert len(rows) == 1
     assert rows[0]["username"] == "alice"
 
