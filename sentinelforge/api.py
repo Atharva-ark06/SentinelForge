@@ -182,6 +182,13 @@ def get_events(
     start: datetime | None = None,
     end: datetime | None = None,
 ):
+    for label, value in (("start", start), ("end", end)):
+        if value is not None and (value.tzinfo is None or value.utcoffset() is None):
+            raise HTTPException(status_code=400, detail=f"{label} must include a timezone")
+    if start:
+        start = start.astimezone(timezone.utc)
+    if end:
+        end = end.astimezone(timezone.utc)
     if start and end and start > end:
         raise HTTPException(status_code=400, detail="start must be earlier than or equal to end")
     if source_ip:
