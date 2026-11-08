@@ -164,6 +164,7 @@ def insert_alert(alert: dict[str, Any], db_path: str | Path | None = None) -> bo
 
 def update_alert_status(alert_id: int, new_status: str, actor: str, note: str = "",
                         db_path: str | Path | None = None) -> dict[str, Any] | None:
+    import json
     from datetime import datetime, timezone
     if new_status not in ALERT_STATUSES:
         raise ValueError("Unsupported alert status")
