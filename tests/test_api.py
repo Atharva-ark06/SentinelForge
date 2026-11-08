@@ -178,3 +178,40 @@ def test_alert_status_rejects_invalid_transition_payload():
             "status": "deleted", "actor": "analyst",
         })
         assert response.status_code == 422
+
+
+def test_alert_status_returns_not_found_for_unknown_id():
+    with TestClient(api.app) as client:
+        client.headers.update({"X-API-Key": "test-secret"})
+        response = client.patch("/alerts/9999/status", json={
+            "status": "resolved", "actor": "analyst",
+        })
+        assert response.status_code == 404
+
+
+def test_event_query_rejects_reversed_time_range():
+    with TestClient(api.app) as client:
+        response = client.get("/events", params={
+            "start": "2026-10-29T10:00:00Z",
+            "end": "2026-10-28T10:00:00Z",
+        })
+        assert response.status_code == 400
+
+
+def test_alert_query_validates_severity_and_status():
+    with TestClient(api.app) as client:
+        assert client.get("/alerts", params={"severity": "urgent"}).status_code == 422
+        assert client.get("/alerts", params={"status": "closed"}).status_code == 422
+
+
+def test_alert_activity_returns_empty_for_alert_without_transitions():
+    with TestClient(api.app) as client:
+        client.headers.update({"X-API-Key": "test-secret"})
+        for i in range(5):
+            client.post("/events", json={
+                "timestamp": f"2026-10-28T10:0{i}:00Z", "event_type": "login_failure",
+                "username": "admin", "source_ip": "192.0.2.77", "host": "lab01",
+            })
+        alert = next(a for a in client.get("/alerts").json()
+                     if a["rule_id"] == "SF-AUTH-001")
+        assert client.get(f"/alerts/{alert['id']}/activity").json() == []
