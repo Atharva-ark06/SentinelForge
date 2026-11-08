@@ -86,6 +86,7 @@ def init_db(db_path: str | Path | None = None) -> None:
             )
         """)
         conn.execute("CREATE INDEX IF NOT EXISTS idx_alert_activity_alert ON alert_activity(alert_id, id)")
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_alerts_status_last_seen ON alerts(status, last_seen)")
 
 
 def insert_event(event: dict[str, Any], db_path: str | Path | None = None) -> int:
