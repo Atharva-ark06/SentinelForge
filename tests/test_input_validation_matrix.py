@@ -5,3 +5,4 @@ from sentinelforge.models import SecurityEventIn
 
 CASES = [
     ("source_ip", "192.0.2.1", true),
+    ("source_ip", "192.0.2.2", true),
