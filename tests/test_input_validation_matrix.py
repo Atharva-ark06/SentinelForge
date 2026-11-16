@@ -58,3 +58,4 @@ CASES = [
     ("source_ip", "1.2.3.4:80", false),
     ("source_ip", "[2001:db8::1]", false),
     ("source_ip", "0x7f000001", false),
+    ("source_ip", "192.0.2.-1", false),
