@@ -116,3 +116,4 @@ def test_initial_sensor_query_is_bounded():
     query = powershell_query(max_events=25)
     assert "-MaxEvents 25" in query
     assert "EventRecordID >" not in query
+    assert "-Oldest" not in query
