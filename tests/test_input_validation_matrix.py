@@ -14,3 +14,4 @@ CASES = [
     ("source_ip", "192.0.2.8", true),
     ("source_ip", "192.0.2.9", true),
     ("source_ip", "192.0.2.10", true),
+    ("source_ip", "192.0.2.11", true),
