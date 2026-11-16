@@ -52,3 +52,4 @@ CASES = [
     ("source_ip", "999.999.999.999", false),
     ("source_ip", "abc", false),
     ("source_ip", "localhost", false),
+    ("source_ip", "::gg", false),
