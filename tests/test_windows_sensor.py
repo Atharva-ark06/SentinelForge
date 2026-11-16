@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.windows_sensor import eligible_event, load_checkpoint, parse_event, save_checkpoint, send_event
+from scripts.windows_sensor import (eligible_event, load_checkpoint, parse_event, powershell_query, save_checkpoint, send_event, validate_api_url)
 
 
 def event_xml(event_id=4625, record_id=123, username="alice", ip="192.0.2.5", logon_type="3"):
@@ -68,3 +68,65 @@ def test_send_event_includes_api_key(monkeypatch):
              "username": "lab-user", "source_ip": "192.0.2.10", "host": "lab-win01"}
     assert send_event(event, "http://127.0.0.1:8000/events", "test-key") is True
     assert captured["request"].get_header("X-api-key") == "test-key"
+
+
+
+def test_sensor_requires_https_for_remote_api_hosts():
+    assert validate_api_url("https://api.example.test/events") == "https://api.example.test/events"
+    with pytest.raises(ValueError, match="must use HTTPS"):
+        validate_api_url("http://api.example.test/events")
+
+
+@pytest.mark.parametrize("url", [
+    "http://127.0.0.1:8000/events",
+    "http://localhost:8000/events",
+    "https://127.0.0.1:8443/events",
+])
+def test_sensor_allows_loopback_or_https_api_urls(url):
+    assert validate_api_url(url) == url
+
+
+@pytest.mark.parametrize("url", [
+    "ftp://api.example.test/events",
+    "/events",
+    "http:///events",
+    "https://user:secret@api.example.test/events",
+    "https://api.example.test/events#fragment",
+])
+def test_sensor_rejects_malformed_api_urls(url):
+    with pytest.raises(ValueError):
+        validate_api_url(url)
+
+
+def test_sensor_query_uses_checkpoint_and_oldest_first():
+    query = powershell_query(max_events=100, after_record_id=900)
+    assert "EventRecordID > 900" in query
+    assert "-Oldest" in query
+    assert "-MaxEvents 100" in query
+
+
+def test_sensor_query_validates_batch_size_and_checkpoint():
+    with pytest.raises(ValueError, match="max_events"):
+        powershell_query(max_events=0)
+    with pytest.raises(ValueError, match="after_record_id"):
+        powershell_query(after_record_id=-1)
+
+
+def test_initial_sensor_query_is_bounded():
+    query = powershell_query(max_events=25)
+    assert "-MaxEvents 25" in query
+    assert "EventRecordID >" not in query
+    assert "-Oldest" not in query
+
+
+def test_send_event_rejects_remote_http_before_network_call(monkeypatch):
+    import scripts.windows_sensor as sensor
+
+    def unexpected_urlopen(*args, **kwargs):
+        raise AssertionError("network call must not happen for remote HTTP")
+
+    monkeypatch.setattr(sensor.urllib.request, "urlopen", unexpected_urlopen)
+    event = {"record_id": 8, "event_id": 4625, "timestamp": "2026-11-07T10:00:00Z",
+             "username": "lab-user", "source_ip": "192.0.2.10", "host": "lab-win01"}
+    with pytest.raises(ValueError, match="must use HTTPS"):
+        send_event(event, "http://api.example.test/events", "test-key")

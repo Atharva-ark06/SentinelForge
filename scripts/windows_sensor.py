@@ -13,6 +13,7 @@ import subprocess
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -26,15 +27,44 @@ DEFAULT_STATE_FILE = Path(__file__).resolve().parent / ".sentinelforge_sensor_st
 NS = {"e": "http://schemas.microsoft.com/win/2004/08/events/event"}
 
 
-def powershell_query(max_events: int = MAX_EVENTS) -> str:
-    # Explicitly return a non-zero exit code on access/query errors so the
-    # Python process cannot mistake a permission failure for an empty log.
+def validate_api_url(api_url: str) -> str:
+    """Require HTTPS for remote API hosts so the shared key is not sent in cleartext."""
+    parsed = urllib.parse.urlsplit(api_url)
+    if parsed.scheme not in {"http", "https"} or not parsed.hostname:
+        raise ValueError("API URL must be an absolute http(s) URL with a hostname")
+    if parsed.username or parsed.password or parsed.query or parsed.fragment:
+        raise ValueError("API URL must not contain credentials, query parameters or a fragment")
+    if parsed.scheme == "http":
+        host = parsed.hostname.lower()
+        try:
+            loopback = ipaddress.ip_address(host).is_loopback
+        except ValueError:
+            loopback = host == "localhost"
+        if not loopback:
+            raise ValueError("Remote API URLs must use HTTPS; plain HTTP is allowed only for localhost")
+    return api_url
+
+
+def powershell_query(max_events: int = MAX_EVENTS, after_record_id: int | None = None) -> str:
+    """Read a bounded batch in record order without skipping a backlog."""
+    if not 1 <= max_events <= 10_000:
+        raise ValueError("max_events must be between 1 and 10000")
+    if after_record_id is not None and after_record_id < 0:
+        raise ValueError("after_record_id cannot be negative")
+    filter_expression = "*[System[(EventID=4624 or EventID=4625)]]"
+    if after_record_id is not None:
+        filter_expression = (
+            "*[System[(EventID=4624 or EventID=4625) "
+            f"and EventRecordID > {int(after_record_id)}]]"
+        )
+    # The first poll establishes a baseline from the newest records; subsequent
+    # polls drain records after the checkpoint from oldest to newest.
+    oldest_option = "-Oldest" if after_record_id is not None else ""
     return rf"""
 $ErrorActionPreference = 'Stop'
 try {{
     $items = @(
-        Get-WinEvent -FilterHashtable @{{LogName='Security'; Id=@(4624,4625)}} `
-            -MaxEvents {max_events} -ErrorAction Stop |
+        Get-WinEvent -LogName 'Security' -FilterXPath '{filter_expression}' -MaxEvents {max_events} {oldest_option} -ErrorAction Stop |
         ForEach-Object {{ $_.ToXml() }}
     )
     ConvertTo-Json -InputObject $items -Compress -Depth 3
@@ -43,7 +73,6 @@ try {{
     exit 2
 }}
 """
-
 
 def load_checkpoint(state_file: Path) -> int | None:
     if not state_file.exists():
@@ -102,9 +131,9 @@ def parse_event(xml_text: str) -> dict[str, Any]:
     }
 
 
-def fetch_security_events(max_events: int = MAX_EVENTS) -> list[dict[str, Any]]:
+def fetch_security_events(max_events: int = MAX_EVENTS, after_record_id: int | None = None) -> list[dict[str, Any]]:
     result = subprocess.run(
-        ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", powershell_query(max_events)],
+        ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", powershell_query(max_events, after_record_id)],
         capture_output=True,
         text=True,
         timeout=30,
@@ -138,6 +167,9 @@ def eligible_event(event: dict[str, Any]) -> tuple[bool, str]:
 
 
 def send_event(event: dict[str, Any], api_url: str, api_key: str) -> bool:
+    # Enforce transport policy here as well as in CLI parsing so callers that
+    # import send_event directly cannot accidentally transmit the key over HTTP.
+    validate_api_url(api_url)
     payload = {
         "timestamp": event["timestamp"],
         "event_type": "login_success" if event["event_id"] == 4624 else "login_failure",
@@ -200,7 +232,7 @@ def process_events(last_record_id: int, events: list[dict[str, Any]], state_file
 
 
 def poll_once(last_record_id: int | None, state_file: Path, api_url: str, max_events: int = MAX_EVENTS, api_key: str = DEFAULT_API_KEY) -> int:
-    events = fetch_security_events(max_events)
+    events = fetch_security_events(max_events, after_record_id=last_record_id)
     if not events:
         print("[POLL] No matching Windows logon events returned.")
         return last_record_id if last_record_id is not None else 0
@@ -225,9 +257,16 @@ def main() -> int:
     parser.add_argument("--api-url", default=DEFAULT_API_URL, help=f"Event endpoint (default: {DEFAULT_API_URL})")
     parser.add_argument("--state-file", type=Path, default=DEFAULT_STATE_FILE, help="Checkpoint file path")
     parser.add_argument("--api-key", default=DEFAULT_API_KEY, help="Ingestion key (prefer SENTINELFORGE_API_KEY environment variable)")
+    parser.add_argument("--max-events", type=int, default=MAX_EVENTS, help="Maximum records per poll (1-10000)")
     args = parser.parse_args()
     if args.interval < 1:
         parser.error("--interval must be at least 1 second")
+    try:
+        args.api_url = validate_api_url(args.api_url)
+    except ValueError as exc:
+        parser.error(str(exc))
+    if not 1 <= args.max_events <= 10_000:
+        parser.error("--max-events must be between 1 and 10000")
     if not args.api_key.strip():
         parser.error("Set SENTINELFORGE_API_KEY or pass --api-key; the sensor will not send unauthenticated events.")
 
@@ -244,7 +283,7 @@ def main() -> int:
 
     while True:
         try:
-            last_record_id = poll_once(last_record_id, args.state_file, args.api_url, api_key=args.api_key)
+            last_record_id = poll_once(last_record_id, args.state_file, args.api_url, max_events=args.max_events, api_key=args.api_key)
         except subprocess.CalledProcessError as exc:
             detail = (exc.stderr or exc.stdout or str(exc)).strip()
             print(f"[ERROR] Could not query Windows Security log: {detail}")

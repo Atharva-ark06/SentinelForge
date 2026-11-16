@@ -102,7 +102,7 @@ python .\scripts\windows_sensor.py --once
 python .\scripts\windows_sensor.py --interval 5
 ```
 
-It establishes a first-run baseline, skips older records, and omits events with unusable account/IP fields. Its checkpoint `scripts/.sentinelforge_sensor_state.json` is generated locally and must not be committed. Polling is capped at 250 records per cycle.
+It establishes a first-run baseline from the newest records, then reads subsequent records after its checkpoint in oldest-first batches so a burst larger than one poll does not silently skip the backlog. Remote API URLs must use HTTPS; plain HTTP is accepted only for localhost/loopback. It omits events with unusable account/IP fields. Its checkpoint `scripts/.sentinelforge_sensor_state.json` is generated locally and must not be committed. Polling defaults to 250 records per cycle and can be tuned with `--max-events` (maximum 10,000).
 
 ## API reference
 
@@ -144,7 +144,7 @@ npm ci
 npm run build
 ```
 
-GitHub Actions runs backend tests/compile checks and frontend production build. A separate workflow audits dependencies.
+GitHub Actions tests Python 3.11–3.13, compiles backend modules, type-checks/builds the frontend, and audits Python plus frontend production and development dependencies. GitHub Pages builds from a generated npm lockfile before installing with `npm ci`.
 
 ## Configure your own API key (local backend)
 
@@ -261,3 +261,12 @@ frontend/                      React SOC dashboard
 - Do not expose the API directly to untrusted networks.
 - Do not upload real user or organizational telemetry without authorization and security review.
 - Production readiness requires robust identity/authorization, rate limiting, TLS, secrets management, retention, backups, monitoring, incident response, and independent threat modeling.
+
+
+## Sensor transport and backlog safety
+
+The Windows sensor sends the shared ingestion key in the `X-API-Key` header. Use HTTPS for any non-loopback API host; plain HTTP is intentionally restricted to `localhost` and loopback addresses for local development. Do not pass secrets on command lines where process listings may expose them; prefer the `SENTINELFORGE_API_KEY` environment variable.
+
+The first sensor poll establishes a baseline from the newest visible matching records and does not replay the historical log. Later polls query records with an event record ID greater than the saved checkpoint and read oldest-first in bounded batches. If the sensor falls behind, it drains the backlog over successive polls rather than skipping records merely because more than one batch accumulated. Checkpoint files are local operational state and must remain untracked.
+
+See [Windows sensor security and operations](docs/security/windows-sensor.md) for the transport policy, checkpoint behavior, limitations and recovery guidance.
