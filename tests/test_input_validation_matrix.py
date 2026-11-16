@@ -88,3 +88,4 @@ CASES = [
     ("username", " ", false),
     ("username", "\t", false),
     ("username", "\n", false),
+    ("username", "\r", false),
