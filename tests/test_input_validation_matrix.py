@@ -93,3 +93,4 @@ CASES = [
     ("host", "", false),
     ("host", " ", false),
     ("host", "\t", false),
+    ("host", "\n", false),
