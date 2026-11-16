@@ -94,7 +94,7 @@ CASES = [
     ("host", " ", False),
     ("host", "\t", False),
     ("host", "\n", False),
-    ("host", "\u2003", False),
+    ("host", "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", False),
 ]
 
 
