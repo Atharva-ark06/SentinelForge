@@ -48,3 +48,4 @@ CASES = [
     ("source_ip", " ", false),
     ("source_ip", "256.0.0.1", false),
     ("source_ip", "192.0.2", false),
+    ("source_ip", "192.0.2.1.1", false),
