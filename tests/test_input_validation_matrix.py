@@ -75,3 +75,4 @@ CASES = [
     ("timestamp", "2026-09-09T09:09:09+03:30", true),
     ("timestamp", "2026-10-10T10:10:10-03:30", true),
     ("timestamp", "2026-01-01T00:00:00", false),
+    ("timestamp", "not-a-date", false),
