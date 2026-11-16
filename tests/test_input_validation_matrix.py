@@ -83,3 +83,4 @@ CASES = [
     ("timestamp", "2026-01-01", false),
     ("timestamp", "2026-01-01T25:00:00Z", false),
     ("timestamp", "2026-01-01T00:61:00Z", false),
+    ("timestamp", "2026-01-01T00:00:00+99:99", false),
