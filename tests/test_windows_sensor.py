@@ -117,3 +117,16 @@ def test_initial_sensor_query_is_bounded():
     assert "-MaxEvents 25" in query
     assert "EventRecordID >" not in query
     assert "-Oldest" not in query
+
+
+def test_send_event_rejects_remote_http_before_network_call(monkeypatch):
+    import scripts.windows_sensor as sensor
+
+    def unexpected_urlopen(*args, **kwargs):
+        raise AssertionError("network call must not happen for remote HTTP")
+
+    monkeypatch.setattr(sensor.urllib.request, "urlopen", unexpected_urlopen)
+    event = {"record_id": 8, "event_id": 4625, "timestamp": "2026-11-07T10:00:00Z",
+             "username": "lab-user", "source_ip": "192.0.2.10", "host": "lab-win01"}
+    with pytest.raises(ValueError, match="must use HTTPS"):
+        send_event(event, "http://api.example.test/events", "test-key")
