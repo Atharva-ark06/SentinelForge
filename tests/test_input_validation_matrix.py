@@ -64,3 +64,4 @@ CASES = [
     ("source_ip", "192.168.1.1/24", false),
     ("source_ip", "fe80::1%", false),
     ("source_ip", "300.1.1.1", false),
+    ("timestamp", "2026-01-01T00:00:00Z", true),
