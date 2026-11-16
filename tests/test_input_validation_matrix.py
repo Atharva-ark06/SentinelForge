@@ -86,3 +86,4 @@ CASES = [
     ("timestamp", "2026-01-01T00:00:00+99:99", false),
     ("username", "", false),
     ("username", " ", false),
+    ("username", "\t", false),
