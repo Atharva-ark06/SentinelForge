@@ -53,3 +53,4 @@ CASES = [
     ("source_ip", "abc", false),
     ("source_ip", "localhost", false),
     ("source_ip", "::gg", false),
+    ("source_ip", "2001:db8:::1", false),
