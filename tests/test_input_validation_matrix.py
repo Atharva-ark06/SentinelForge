@@ -89,3 +89,4 @@ CASES = [
     ("username", "\t", false),
     ("username", "\n", false),
     ("username", "\r", false),
+    ("username", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", false),
