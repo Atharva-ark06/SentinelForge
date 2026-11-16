@@ -1,7 +1,7 @@
 name: Dependency audit
 on:
   push:
-    branches: [main, security-hardening-pages-50-commits]
+    branches: [main]
   pull_request:
   schedule:
     - cron: "17 7 * * 1"
@@ -21,5 +21,5 @@ jobs:
         with: { node-version: 22 }
       - run: npm install --package-lock-only --ignore-scripts
         working-directory: frontend
-      - run: npm audit --omit=dev --audit-level=high
+      - run: npm audit --audit-level=high
         working-directory: frontend
