@@ -57,12 +57,14 @@ def powershell_query(max_events: int = MAX_EVENTS, after_record_id: int | None =
             "*[System[(EventID=4624 or EventID=4625) "
             f"and EventRecordID > {int(after_record_id)}]]"
         )
-    # -Oldest drains a backlog in order over successive bounded polling cycles.
+    # The first poll establishes a baseline from the newest records; subsequent
+    # polls drain records after the checkpoint from oldest to newest.
+    oldest_option = "-Oldest" if after_record_id is not None else ""
     return rf"""
 $ErrorActionPreference = 'Stop'
 try {{
     $items = @(
-        Get-WinEvent -LogName 'Security' -FilterXPath '{filter_expression}' -MaxEvents {max_events} -Oldest -ErrorAction Stop |
+        Get-WinEvent -LogName 'Security' -FilterXPath '{filter_expression}' -MaxEvents {max_events} {oldest_option} -ErrorAction Stop |
         ForEach-Object {{ $_.ToXml() }}
     )
     ConvertTo-Json -InputObject $items -Compress -Depth 3
