@@ -26,3 +26,4 @@ CASES = [
     ("source_ip", "192.0.2.20", true),
     ("source_ip", "2001:db8::1", true),
     ("source_ip", "2001:db8::2", true),
+    ("source_ip", "2001:db8::3", true),
