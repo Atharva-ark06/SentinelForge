@@ -28,3 +28,4 @@ CASES = [
     ("source_ip", "2001:db8::2", true),
     ("source_ip", "2001:db8::3", true),
     ("source_ip", "2001:db8::4", true),
+    ("source_ip", "2001:db8::5", true),
