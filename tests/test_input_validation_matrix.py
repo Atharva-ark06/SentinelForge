@@ -92,3 +92,4 @@ CASES = [
     ("username", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", false),
     ("host", "", false),
     ("host", " ", false),
+    ("host", "\t", false),
