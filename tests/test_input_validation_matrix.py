@@ -1,0 +1,7 @@
+"""Regression matrix for normalized event input validation."""
+import pytest
+from pydantic import ValidationError
+from sentinelforge.models import SecurityEventIn
+
+CASES = [
+    ("source_ip", "192.0.2.1", true),
