@@ -94,3 +94,26 @@ CASES = [
     ("host", " ", false),
     ("host", "\t", false),
     ("host", "\n", false),
+    ("host", "\u2003", False),
+]
+
+
+@pytest.mark.parametrize("field,value,valid", CASES)
+def test_event_model_validation_matrix(field, value, valid):
+    payload = {
+        "timestamp": "2026-11-01T10:00:00Z",
+        "event_type": "login_failure",
+        "username": "lab-user",
+        "source_ip": "192.0.2.10",
+        "host": "lab-win01",
+    }
+    payload[field] = value
+    if valid:
+        event = SecurityEventIn.model_validate(payload)
+        if field in {"username", "host"}:
+            assert getattr(event, field) == value.strip()
+        else:
+            assert getattr(event, field) is not None
+    else:
+        with pytest.raises(ValidationError):
+            SecurityEventIn.model_validate(payload)
