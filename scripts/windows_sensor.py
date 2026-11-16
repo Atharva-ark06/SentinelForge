@@ -32,8 +32,8 @@ def validate_api_url(api_url: str) -> str:
     parsed = urllib.parse.urlsplit(api_url)
     if parsed.scheme not in {"http", "https"} or not parsed.hostname:
         raise ValueError("API URL must be an absolute http(s) URL with a hostname")
-    if parsed.username or parsed.password or parsed.fragment:
-        raise ValueError("API URL must not contain credentials or a fragment")
+    if parsed.username or parsed.password or parsed.query or parsed.fragment:
+        raise ValueError("API URL must not contain credentials, query parameters or a fragment")
     if parsed.scheme == "http":
         host = parsed.hostname.lower()
         try:
@@ -167,6 +167,9 @@ def eligible_event(event: dict[str, Any]) -> tuple[bool, str]:
 
 
 def send_event(event: dict[str, Any], api_url: str, api_key: str) -> bool:
+    # Enforce transport policy here as well as in CLI parsing so callers that
+    # import send_event directly cannot accidentally transmit the key over HTTP.
+    validate_api_url(api_url)
     payload = {
         "timestamp": event["timestamp"],
         "event_type": "login_success" if event["event_id"] == 4624 else "login_failure",
