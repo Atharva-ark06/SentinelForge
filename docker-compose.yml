@@ -1,0 +1,25 @@
+services:
+  api:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      SENTINELFORGE_DB: /data/sentinelforge.sqlite3
+      SENTINELFORGE_ALLOWED_HOSTS: localhost,127.0.0.1
+      SENTINELFORGE_PROTECT_READS: "true"
+      SENTINELFORGE_ENABLE_DOCS: "false"
+    volumes:
+      - sentinel_data:/data
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
+volumes:
+  sentinel_data:
