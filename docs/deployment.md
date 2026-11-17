@@ -37,7 +37,7 @@ The Windows sensor reads `SENTINELFORGE_API_KEY` from its process environment an
 
 ## Important data exposure warning
 
-The current `GET /events` and `GET /alerts` endpoints are read-only but do not require authentication. CORS is a browser policy, not API access control; it does not stop direct HTTP clients from requesting data. **Do not connect this public Pages dashboard to real employee, customer, or organizational telemetry on an internet-accessible API in its current form.** Use synthetic/demo data only, or put the API behind an authenticated access gateway and implement user-level authorization before exposing real telemetry. Keep the database private.
+By default telemetry reads are open for the synthetic-data demo. Set `SENTINELFORGE_PROTECT_READS=true` on the API to enforce the configured `X-API-Key` for telemetry reads. This shared-key mode does not replace per-user authentication or authorization. CORS is a browser policy, not API access control. **Do not connect this public Pages dashboard to real employee, customer, or organizational telemetry on an internet-accessible API without an authenticated gateway and role-based access.** Keep the database private.
 
 ## Local development
 
