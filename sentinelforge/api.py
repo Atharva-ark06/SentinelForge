@@ -6,7 +6,7 @@ import hmac
 import os
 
 from fastapi import FastAPI, HTTPException, Query, Request
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 
@@ -21,6 +21,7 @@ from .db import (
     update_alert_status,
 )
 from .detection import evaluate_new_event
+from .rate_limit import FixedWindowLimiter
 from .models import AlertStatusUpdate, SecurityEventIn
 
 DB_PATH = Path(os.environ.get("SENTINELFORGE_DB", "sentinelforge.sqlite3"))
@@ -68,9 +69,20 @@ app.add_middleware(
 )
 
 
+# Per-process protection; deploy a shared edge limiter for multi-worker instances.
+READ_LIMITER = FixedWindowLimiter(limit=int(os.environ.get("SENTINELFORGE_READ_RATE_LIMIT", "600")))
+WRITE_LIMITER = FixedWindowLimiter(limit=int(os.environ.get("SENTINELFORGE_WRITE_RATE_LIMIT", "120")))
+
+
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
-    response = await call_next(request)
+    client_ip = request.client.host if request.client else "unknown"
+    limiter = WRITE_LIMITER if request.method in {"POST", "PATCH", "PUT", "DELETE"} else READ_LIMITER
+    if not limiter.allow(client_ip):
+        response = JSONResponse(status_code=429, content={"detail": "Too many requests"})
+        response.headers["Retry-After"] = "60"
+    else:
+        response = await call_next(request)
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["Referrer-Policy"] = "no-referrer"
