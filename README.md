@@ -115,7 +115,7 @@ It establishes a first-run baseline from the newest records, then reads subseque
 | POST | `/events` | Ingest validated event; requires `X-API-Key` |
 | POST | `/demo/run` | Generate synthetic events; requires `X-API-Key` |
 
-Write endpoints and alert status changes require `SENTINELFORGE_API_KEY`. If it is not configured, protected operations fail closed with HTTP 503. Configure exact origins and hostnames for deployments; see [Security Risk Register](docs/security-risk-register.md).
+Write endpoints and alert status changes require `SENTINELFORGE_API_KEY`. If it is not configured, protected operations fail closed with HTTP 503. Set `SENTINELFORGE_PROTECT_READS=true` on the API process to require this key for telemetry reads too (recommended for private deployments). Configure exact origins and hostnames for deployments; see [Security Risk Register](docs/security-risk-register.md).
 
 ## Alert investigation workflow
 
@@ -206,7 +206,7 @@ $headers = @{ "X-API-Key" = $env:SENTINELFORGE_API_KEY }
 Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8000/demo/run" -Headers $headers
 ```
 
-Read-only endpoints (`GET /health`, `GET /events`, `GET /alerts`, `GET /metrics` and alert activity) do not require the key. If the API key is missing, write operations fail closed; a wrong key returns `401`.
+By default read-only endpoints do not require the key. When `SENTINELFORGE_PROTECT_READS=true`, telemetry reads (`GET /events`, `GET /alerts`, `GET /metrics`, and alert activity) require `X-API-Key`; `GET /health` remains public. If the API key is missing, protected operations fail closed; a wrong key returns `401`. The public demo frontend does not provide an authenticated read session; use synthetic data there.
 
 **Never** put secrets in frontend source code, `VITE_*` variables, GitHub Pages, screenshots, or committed files. GitHub Pages serves only static frontend assets and cannot securely hold a private API key. For a remotely hosted API, use the host's secret/environment-variable settings, HTTPS, and exact production origin/host allowlists; do not expose the API directly to the public internet without additional controls.
 
