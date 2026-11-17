@@ -105,7 +105,9 @@ def _filters(clauses: list[str], values: list[Any], *, event_type=None,
     if event_type:
         clauses.append("event_type = ?"); values.append(event_type)
     if username:
-        clauses.append("username LIKE ?"); values.append(f"%{username}%")
+        # Treat analyst search input literally, not as SQL LIKE wildcards.
+        escaped = username.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+        clauses.append("username LIKE ? ESCAPE '\\'"); values.append(f"%{escaped}%")
     if source_ip:
         clauses.append("source_ip = ?"); values.append(source_ip)
     if start:

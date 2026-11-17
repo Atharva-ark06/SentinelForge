@@ -26,6 +26,7 @@ from .models import AlertStatusUpdate, SecurityEventIn
 DB_PATH = Path(os.environ.get("SENTINELFORGE_DB", "sentinelforge.sqlite3"))
 DASHBOARD_PATH = Path(__file__).resolve().parent.parent / "dashboard.html"
 API_KEY = os.environ.get("SENTINELFORGE_API_KEY", "").strip()
+PROTECT_READS = os.environ.get("SENTINELFORGE_PROTECT_READS", "false").lower() == "true"
 ALLOWED_ORIGINS = [
     value.strip()
     for value in os.environ.get(
@@ -92,6 +93,12 @@ def require_ingest_key(request: Request) -> None:
     supplied = request.headers.get("X-API-Key", "")
     if not hmac.compare_digest(supplied, API_KEY):
         raise HTTPException(status_code=401, detail="Invalid or missing API key.")
+
+
+def require_read_key(request: Request) -> None:
+    """Optionally protect security telemetry while keeping health checks public."""
+    if PROTECT_READS:
+        require_ingest_key(request)
 
 
 @app.get("/", include_in_schema=False)
@@ -174,6 +181,7 @@ def run_demo(request: Request):
 
 @app.get("/events")
 def get_events(
+    request: Request,
     limit: int = Query(default=100, ge=1, le=1000),
     offset: int = Query(default=0, ge=0, le=100000),
     event_type: str | None = Query(default=None, pattern="^(login_success|login_failure)$"),
@@ -182,6 +190,7 @@ def get_events(
     start: datetime | None = None,
     end: datetime | None = None,
 ):
+    require_read_key(request)
     for label, value in (("start", start), ("end", end)):
         if value is not None and (value.tzinfo is None or value.utcoffset() is None):
             raise HTTPException(status_code=400, detail=f"{label} must include a timezone")
@@ -210,6 +219,7 @@ def get_events(
 
 @app.get("/alerts")
 def get_alerts(
+    request: Request,
     limit: int = Query(default=100, ge=1, le=1000),
     offset: int = Query(default=0, ge=0, le=100000),
     severity: str | None = Query(default=None, pattern="^(low|medium|high|critical)$"),
@@ -219,6 +229,7 @@ def get_alerts(
     ),
     source_ip: str | None = Query(default=None, min_length=1, max_length=64),
 ):
+    require_read_key(request)
     if source_ip:
         try:
             source_ip = str(ip_address(source_ip))
@@ -235,8 +246,9 @@ def get_alerts(
 
 
 @app.get("/metrics")
-def metrics():
+def metrics(request: Request):
     """Return database-wide totals, independent of dashboard page limits."""
+    require_read_key(request)
     return get_metrics(DB_PATH)
 
 
@@ -263,7 +275,8 @@ def change_alert_status(
 
 
 @app.get("/alerts/{alert_id}/activity")
-def alert_activity(alert_id: int):
+def alert_activity(alert_id: int, request: Request):
+    require_read_key(request)
     history = list_alert_activity(alert_id, DB_PATH)
     if not history:
         from .db import connection
