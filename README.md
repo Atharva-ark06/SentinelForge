@@ -111,7 +111,9 @@ It establishes a first-run baseline from the newest records, then reads subseque
 | GET | `/health` | Service health |
 | GET | `/events?limit=100&offset=0` | Filtered/paginated events (type, username, source IP, time range) |
 | GET | `/metrics` | Database-wide event and alert totals, severity and status counts |
-| GET | `/alerts?limit=100&offset=0&severity=medium&status=new` | Filtered/paginated alerts |\n| GET | `/alerts/{id}/activity` | Alert status transition history |\n| PATCH | `/alerts/{id}/status` | Change alert status; requires `X-API-Key` |
+| GET | `/alerts?limit=100&offset=0&severity=medium&status=new` | Filtered/paginated alerts |
+| GET | `/alerts/{id}/activity` | Alert status transition history |
+| PATCH | `/alerts/{id}/status` | Change alert status; requires `X-API-Key` |
 | POST | `/events` | Ingest validated event; requires `X-API-Key` |
 | POST | `/demo/run` | Generate synthetic events; requires `X-API-Key` |
 
@@ -270,3 +272,17 @@ The Windows sensor sends the shared ingestion key in the `X-API-Key` header. Use
 The first sensor poll establishes a baseline from the newest visible matching records and does not replay the historical log. Later polls query records with an event record ID greater than the saved checkpoint and read oldest-first in bounded batches. If the sensor falls behind, it drains the backlog over successive polls rather than skipping records merely because more than one batch accumulated. Checkpoint files are local operational state and must remain untracked.
 
 See [Windows sensor security and operations](docs/security/windows-sensor.md) for the transport policy, checkpoint behavior, limitations and recovery guidance.
+
+
+## Secure Docker quick start
+
+1. Copy `.env.example` to `.env` and generate a unique `SENTINELFORGE_API_KEY`.
+2. Run `docker compose up --build` from the repository root.
+3. Check `http://127.0.0.1:8000/health`. The container binds to loopback, runs as a non-root user, and persists SQLite in a named volume.
+4. Read `CONTRIBUTING.md` before submitting changes. See `LICENSE` for reuse terms.
+
+**Request limiting:** The API applies an in-process fixed-window rate limit (600 reads/minute and 120 writes/minute per client IP by default). Configure `SENTINELFORGE_READ_RATE_LIMIT` and `SENTINELFORGE_WRITE_RATE_LIMIT` for a single-worker lab. This is not a distributed or proxy-aware limiter; place a trusted gateway in front of any internet-facing deployment and do not trust client-supplied forwarding headers.
+
+**Quality checks:** Run `python -m pytest -q`, `python -m compileall -q sentinelforge scripts`, and `ruff check sentinelforge/rate_limit.py tests/test_rate_limit.py tests/test_ip_validation_regression.py`. The focused lint workflow covers the newly introduced security modules; existing legacy code still needs a separate formatting pass.
+
+**Architecture diagram:** See [data flow](docs/architecture/overview.md). Never put API keys in Vite variables or browser bundles.
