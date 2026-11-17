@@ -1,5 +1,6 @@
 from sentinelforge.rate_limit import FixedWindowLimiter
 
+
 def test_limiter_blocks_at_capacity():
     limiter = FixedWindowLimiter(limit=2)
     assert limiter.allow("client", now=1)
