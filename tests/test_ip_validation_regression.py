@@ -1,5 +1,7 @@
 """Regression matrix for accepted IPv4 addresses at the Pydantic API boundary."""
+
 import pytest
+
 from sentinelforge.models import SecurityEventIn
 
 VALID_IPS = [
