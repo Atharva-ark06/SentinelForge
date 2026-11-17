@@ -3,9 +3,11 @@
 Use an edge gateway or shared store for multi-worker and internet-facing deployments.
 Do not trust client-supplied forwarding headers as an identity source.
 """
+
 from collections import defaultdict, deque
 from threading import Lock
 from time import monotonic
+
 
 class FixedWindowLimiter:
     def __init__(self, *, limit: int, window_seconds: float = 60.0, max_clients: int = 10000):
