@@ -3,7 +3,7 @@ import pytest
 from sentinelforge.models import SecurityEventIn
 
 VALID_IPS = [
-    "192.0.2.1",    "192.0.2.2",    "192.0.2.3",    "192.0.2.4",    "192.0.2.5",    "192.0.2.6",    "192.0.2.7",
+    "192.0.2.1",    "192.0.2.2",    "192.0.2.3",    "192.0.2.4",    "192.0.2.5",    "192.0.2.6",    "192.0.2.7",    "192.0.2.8",
 ]
 
 @pytest.mark.parametrize("source_ip", VALID_IPS)
