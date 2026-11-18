@@ -10,6 +10,7 @@ from sentinelforge.observability import log_request, new_request_id
 
 
 CASES = [
+    ("POST", "/health", 401),
     ("GET", "/health", 401),
     ("PATCH", "/redoc", 400),
     ("POST", "/redoc", 400),
