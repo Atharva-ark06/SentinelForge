@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 
 from sentinelforge.api import app
 from sentinelforge.db import connection, init_db, list_alert_activity
-from sentinelforge.observability import log_request, new_request_id
+from sentinelforge.observability import new_request_id
 from scripts.seed import seed
 
 
