@@ -2,10 +2,12 @@ from contextlib import asynccontextmanager
 from datetime import datetime, timedelta, timezone
 from ipaddress import ip_address
 from pathlib import Path
+import sqlite3
 import hmac
 import os
 
 from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
@@ -22,6 +24,7 @@ from .db import (
 )
 from .detection import evaluate_new_event
 from .rate_limit import FixedWindowLimiter
+from .observability import elapsed_ms, log_request, monotonic_start, new_request_id
 from .models import AlertStatusUpdate, SecurityEventIn
 
 DB_PATH = Path(os.environ.get("SENTINELFORGE_DB", "sentinelforge.sqlite3"))
@@ -49,6 +52,8 @@ ALLOWED_HOSTS = [
 async def lifespan(app: FastAPI):
     init_db(DB_PATH)
     yield
+    # Connections are scoped to individual operations and closed by db.connection().
+    log_request(request_id="shutdown", method="LIFESPAN", path="/", status=200, duration_ms=0)
 
 
 app = FastAPI(
@@ -57,8 +62,9 @@ app = FastAPI(
     version="0.4.0",
     lifespan=lifespan,
     docs_url="/docs" if os.environ.get("SENTINELFORGE_ENABLE_DOCS", "true").lower() == "true" else None,
-    redoc_url=None,
+    redoc_url="/redoc" if os.environ.get("SENTINELFORGE_ENABLE_DOCS", "true").lower() == "true" else None,
 )
+app.add_middleware(GZipMiddleware, minimum_size=1024)
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=ALLOWED_HOSTS)
 app.add_middleware(
     CORSMiddleware,
@@ -76,6 +82,8 @@ WRITE_LIMITER = FixedWindowLimiter(limit=int(os.environ.get("SENTINELFORGE_WRITE
 
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
+    request_id = new_request_id()
+    started = monotonic_start()
     client_ip = request.client.host if request.client else "unknown"
     limiter = WRITE_LIMITER if request.method in {"POST", "PATCH", "PUT", "DELETE"} else READ_LIMITER
     if not limiter.allow(client_ip):
@@ -91,7 +99,10 @@ async def security_headers(request: Request, call_next):
         "default-src 'self'; frame-ancestors 'none'; base-uri 'self'; "
         "form-action 'self'; object-src 'none'"
     )
-    response.headers["Cache-Control"] = "no-store"
+    response.headers["Cache-Control"] = "no-cache" if request.url.path == "/" else "no-store"
+    response.headers["X-Request-ID"] = request_id
+    log_request(request_id=request_id, method=request.method, path=request.url.path,
+                status=response.status_code, duration_ms=elapsed_ms(started))
     return response
 
 
@@ -120,6 +131,13 @@ def dashboard():
 
 @app.get("/health")
 def health():
+    from .db import connection
+
+    try:
+        with connection(DB_PATH) as conn:
+            conn.execute("SELECT 1").fetchone()
+    except (sqlite3.Error, OSError):
+        raise HTTPException(status_code=503, detail="Database unavailable") from None
     return {
         "status": "ok",
         "service": "sentinelforge-api",
