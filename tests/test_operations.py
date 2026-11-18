@@ -1,7 +1,5 @@
 """Operational API and seed regression tests."""
 
-import json
-
 from fastapi.testclient import TestClient
 
 from sentinelforge.api import app
@@ -46,10 +44,5 @@ def test_activity_pagination_empty(tmp_path):
     assert list_alert_activity(1234, path, limit=1, offset=0) == []
 
 
-def test_log_is_valid_json(caplog):
-    import logging
-
-    with caplog.at_level(logging.INFO, logger="sentinelforge.http"):
-        log_request(request_id=new_request_id(), method="GET", path="/health", status=200, duration_ms=1.5)
-    # The dedicated production logger writes JSON directly to its own handler.
-    assert True
+def test_request_ids_are_unique():
+    assert new_request_id() != new_request_id()
