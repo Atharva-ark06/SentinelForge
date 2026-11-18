@@ -204,11 +204,12 @@ def update_alert_status(alert_id: int, new_status: str, actor: str, note: str = 
         return item
 
 
-def list_alert_activity(alert_id: int, db_path: str | Path | None = None) -> list[dict[str, Any]]:
+def list_alert_activity(alert_id: int, db_path: str | Path | None = None, *,
+                        limit: int = 100, offset: int = 0) -> list[dict[str, Any]]:
     with connection(db_path) as conn:
         rows = conn.execute(
             """SELECT id, alert_id, previous_status, new_status, actor, note, created_at
-               FROM alert_activity WHERE alert_id = ? ORDER BY id DESC""", (alert_id,)
+               FROM alert_activity WHERE alert_id = ? ORDER BY id DESC LIMIT ? OFFSET ?""", (alert_id, limit, offset)
         ).fetchall()
         return [dict(row) for row in rows]
 
