@@ -305,7 +305,12 @@ def change_alert_status(
 
 
 @app.get("/alerts/{alert_id}/activity")
-def alert_activity(alert_id: int, request: Request,\n                   limit: int = Query(default=100, ge=1, le=1000),\n                   offset: int = Query(default=0, ge=0, le=100000)):
+def alert_activity(
+    alert_id: int,
+    request: Request,
+    limit: int = Query(default=100, ge=1, le=1000),
+    offset: int = Query(default=0, ge=0, le=100000),
+):
     require_read_key(request)
     history = list_alert_activity(alert_id, DB_PATH, limit=limit, offset=offset)
     if not history:
