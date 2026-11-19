@@ -26,6 +26,11 @@ jobs:
       - run: pip install -r requirements.txt
       - run: python -m pytest -q
       - run: python -m compileall -q sentinelforge scripts
+      - run: python scripts/check_import_cycles.py
+      - if: matrix.python-version == '3.12'
+        run: |
+          pip install pip-licenses
+          python scripts/check_licenses.py
   frontend:
     runs-on: ubuntu-latest
     steps:
@@ -38,3 +43,5 @@ jobs:
         working-directory: frontend
       - run: npm run build
         working-directory: frontend
+      - name: Detect copy-pasted code
+        run: npx --yes jscpd@4.0.5 --min-lines 8 --min-tokens 70 --threshold 15 --format 'typescript,tsx,javascript' frontend/src
