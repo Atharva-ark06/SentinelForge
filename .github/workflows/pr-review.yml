@@ -1,0 +1,17 @@
+name: Automated PR review
+on:
+  pull_request:
+permissions:
+  contents: read
+  checks: write
+jobs:
+  reviewdog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: reviewdog/action-ruff@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-check
+          filter_mode: added
+          fail_level: error
