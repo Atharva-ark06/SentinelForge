@@ -21,5 +21,10 @@ services:
     cap_drop:
       - ALL
     restart: unless-stopped
+    networks:
+      - isolated
 volumes:
   sentinel_data:
+networks:
+  isolated:
+    internal: true
