@@ -1,0 +1,7 @@
+# Security-sensitive changes require repository owner review.
+* @Atharva-ark06
+/sentinelforge/api.py @Atharva-ark06
+/sentinelforge/db.py @Atharva-ark06
+/.github/workflows/ @Atharva-ark06
+/requirements.txt @Atharva-ark06
+/frontend/package-lock.json @Atharva-ark06
