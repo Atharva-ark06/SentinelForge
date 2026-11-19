@@ -15,20 +15,40 @@ ALERT_TRANSITIONS = {
 }
 
 
-def connect(db_path: str | Path | None = None) -> sqlite3.Connection:
+_DISALLOWED_SQL = {
+    sqlite3.SQLITE_DROP_TABLE, sqlite3.SQLITE_DROP_INDEX,
+    sqlite3.SQLITE_DROP_TRIGGER, sqlite3.SQLITE_DROP_VIEW,
+    sqlite3.SQLITE_ALTER_TABLE, sqlite3.SQLITE_ATTACH,
+    sqlite3.SQLITE_DETACH, sqlite3.SQLITE_CREATE_TABLE,
+    sqlite3.SQLITE_CREATE_INDEX, sqlite3.SQLITE_CREATE_TRIGGER,
+    sqlite3.SQLITE_CREATE_VIEW,
+}
+
+
+def _data_only_authorizer(action, _arg1, _arg2, _database, _source):
+    if action == sqlite3.SQLITE_PRAGMA and _arg1 and _arg1.lower() in {
+        "writable_schema", "trusted_schema", "journal_mode", "foreign_keys"
+    }:
+        return sqlite3.SQLITE_DENY
+    return sqlite3.SQLITE_DENY if action in _DISALLOWED_SQL else sqlite3.SQLITE_OK
+
+
+def connect(db_path: str | Path | None = None, *, schema_admin: bool = False) -> sqlite3.Connection:
     path = Path(db_path) if db_path else DEFAULT_DB
     path.parent.mkdir(parents=True, exist_ok=True)
     connection = sqlite3.connect(path, timeout=10)
     connection.row_factory = sqlite3.Row
     connection.execute("PRAGMA foreign_keys = ON")
     connection.execute("PRAGMA busy_timeout = 10000")
+    if not schema_admin:
+        connection.set_authorizer(_data_only_authorizer)
     return connection
 
 
 @contextmanager
-def connection(db_path: str | Path | None = None):
+def connection(db_path: str | Path | None = None, *, schema_admin: bool = False):
     """Yield a SQLite connection that commits/rolls back and always closes."""
-    conn = connect(db_path)
+    conn = connect(db_path, schema_admin=schema_admin)
     try:
         yield conn
         conn.commit()
@@ -40,7 +60,7 @@ def connection(db_path: str | Path | None = None):
 
 
 def init_db(db_path: str | Path | None = None) -> None:
-    with connection(db_path) as conn:
+    with connection(db_path, schema_admin=True) as conn:
         conn.executescript("""
         CREATE TABLE IF NOT EXISTS events (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

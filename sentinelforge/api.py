@@ -5,10 +5,11 @@ from pathlib import Path
 import sqlite3
 import hmac
 import os
+import secrets
 
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.gzip import GZipMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 
@@ -30,6 +31,8 @@ from .models import AlertStatusUpdate, SecurityEventIn
 DB_PATH = Path(os.environ.get("SENTINELFORGE_DB", "sentinelforge.sqlite3"))
 DASHBOARD_PATH = Path(__file__).resolve().parent.parent / "dashboard.html"
 API_KEY = os.environ.get("SENTINELFORGE_API_KEY", "").strip()
+API_KEY_CURRENT = os.environ.get("SENTINELFORGE_API_KEY_CURRENT", "").strip()
+API_KEY_PREVIOUS = os.environ.get("SENTINELFORGE_API_KEY_PREVIOUS", "").strip()
 PROTECT_READS = os.environ.get("SENTINELFORGE_PROTECT_READS", "false").lower() == "true"
 ALLOWED_ORIGINS = [
     value.strip()
@@ -82,6 +85,8 @@ WRITE_LIMITER = FixedWindowLimiter(limit=int(os.environ.get("SENTINELFORGE_WRITE
 
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
+    nonce = secrets.token_urlsafe(24)
+    request.state.csp_nonce = nonce
     request_id = new_request_id()
     started = monotonic_start()
     client_ip = request.client.host if request.client else "unknown"
@@ -96,8 +101,9 @@ async def security_headers(request: Request, call_next):
     response.headers["Referrer-Policy"] = "no-referrer"
     response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
     response.headers["Content-Security-Policy"] = (
-        "default-src 'self'; frame-ancestors 'none'; base-uri 'self'; "
-        "form-action 'self'; object-src 'none'"
+        f"default-src 'none'; script-src 'nonce-{nonce}'; "
+        f"style-src 'nonce-{nonce}'; connect-src 'self'; img-src 'self' data:; "
+        "frame-ancestors 'none'; base-uri 'none'; form-action 'self'; object-src 'none'"
     )
     response.headers["Cache-Control"] = "no-cache" if request.url.path == "/" else "no-store"
     response.headers["X-Request-ID"] = request_id
@@ -108,13 +114,15 @@ async def security_headers(request: Request, call_next):
 
 def require_ingest_key(request: Request) -> None:
     """Require a configured shared key for trusted write operations."""
-    if not API_KEY:
+    current_key = API_KEY_CURRENT or API_KEY
+    if not current_key:
         raise HTTPException(
             status_code=503,
             detail="Write operations are disabled until SENTINELFORGE_API_KEY is configured.",
         )
     supplied = request.headers.get("X-API-Key", "")
-    if not hmac.compare_digest(supplied, API_KEY):
+    if not any(hmac.compare_digest(supplied, candidate) for candidate in
+               (current_key, API_KEY_PREVIOUS) if candidate):
         raise HTTPException(status_code=401, detail="Invalid or missing API key.")
 
 
@@ -125,8 +133,10 @@ def require_read_key(request: Request) -> None:
 
 
 @app.get("/", include_in_schema=False)
-def dashboard():
-    return FileResponse(DASHBOARD_PATH)
+def dashboard(request: Request):
+    # Substitute only the fixed template token; never interpolate user input into HTML.
+    template = DASHBOARD_PATH.read_text(encoding="utf-8")
+    return HTMLResponse(template.replace("__CSP_NONCE__", request.state.csp_nonce))
 
 
 @app.get("/health")
