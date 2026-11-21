@@ -64,3 +64,6 @@ table th{font-weight:750;letter-spacing:.025em}
 
 /* numeric column scanability */
 table td{font-variant-numeric:tabular-nums}
+
+/* long API errors layout containment */
+.notice.error{overflow-wrap:anywhere}
