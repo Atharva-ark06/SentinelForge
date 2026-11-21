@@ -286,3 +286,50 @@ See [Windows sensor security and operations](docs/security/windows-sensor.md) fo
 **Quality checks:** Run `python -m pytest -q`, `python -m compileall -q sentinelforge scripts`, and `ruff check sentinelforge/rate_limit.py tests/test_rate_limit.py tests/test_ip_validation_regression.py`. The focused lint workflow covers the newly introduced security modules; existing legacy code still needs a separate formatting pass.
 
 **Architecture diagram:** See [data flow](docs/architecture/overview.md). Never put API keys in Vite variables or browser bundles.
+
+
+## PR #32 dashboard, API integration, and security updates
+
+The React GitHub Pages dashboard has a top-right light/dark theme switcher and
+accessible, responsive metric cards. **Preview synthetic data** displays clearly
+labelled fictional records in browser memory without submitting anything to the
+backend. The preview uses documentation-only IP addresses and is not evidence
+of an incident, API connectivity, or a live data feed. Exit preview to resume
+live API reads. Preview mode disables live refresh actions and marks its metrics,
+chart, tables, and connection indicators as synthetic.
+
+### Connecting the live dashboard
+
+1. Deploy FastAPI and SQLite separately; GitHub Pages serves static frontend
+   files only. Set `VITE_API_BASE_URL` to the reachable HTTPS API origin in
+   the GitHub Actions build environment, then redeploy Pages.
+2. On the API host, set `SENTINELFORGE_ALLOWED_ORIGINS` to the exact Pages
+   origin and `SENTINELFORGE_ALLOWED_HOSTS` to the API host. Never put API
+   keys in `VITE_*` values or in browser JavaScript.
+3. Open the deployed dashboard and check the API status. Live mode requests
+   `/health`, `/events?limit=250`, `/alerts?limit=250`, and `/metrics`.
+   Errors, invalid JSON responses, and request timeouts are reported rather
+   than silently rendered as an empty dashboard.
+4. For authorized local demonstration data, set the backend API key and run
+   `python scripts/load_demo.py` from the repository root. Browser preview
+   never modifies the database. Do not expose real security telemetry to
+   unauthenticated internet clients; set `SENTINELFORGE_PROTECT_READS=true`
+   behind a trusted authentication gateway for sensitive environments.
+
+### Hardening and validation
+
+API write operations require a configured secret and compare keys with
+`hmac.compare_digest`; oversized key headers are rejected. Read protection
+is optional and must be explicitly enabled. CORS uses an allowlist and is
+**not** an authentication mechanism. The API adds defensive response headers,
+query-value validation, and bounded rate limiting. The expanded regression
+suite covers authentication, malformed filters, and HTTP response headers.
+
+Review [the production hardening checklist](docs/reviews/production-hardening-checklist.md),
+[authentication threat review](docs/reviews/authentication-threat-review.md),
+and [live-data audit](docs/reviews/dashboard-live-data-audit.md).
+
+**Validation status:** A commit count is not a substitute for passing tests.
+Run the complete backend tests, frontend TypeScript build, dependency audit,
+and GitHub Actions checks before merging. This README does not claim those
+checks have passed.
