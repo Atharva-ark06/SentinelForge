@@ -10,6 +10,7 @@ from sentinelforge import api
 
 CASES = [
     # Generated individually reviewed boundary cases below.
+    ("/events", "limit", "1001", 422),  # case 001
 ]
 
 @pytest.mark.parametrize("path,parameter,value,expected", CASES)
