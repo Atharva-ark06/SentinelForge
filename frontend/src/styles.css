@@ -55,3 +55,6 @@ button:disabled{opacity:.55;cursor:not-allowed}
 
 /* text selection legibility */
 ::selection{background:#3568a7;color:#fff}
+
+/* pressed toggle visibility */
+[aria-pressed=true]{font-weight:750}
