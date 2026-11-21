@@ -145,3 +145,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* mobile preview notice sizing */
 @media(max-width:640px){.notice{font-size:12px}}
+
+/* desktop heading tracking */
+@media(min-width:1280px){.panel h2{letter-spacing:-.015em}}
