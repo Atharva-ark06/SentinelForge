@@ -229,3 +229,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* API connection badge emphasis */
 .connection{font-weight:700}
+
+/* active navigation emphasis */
+.nav-item.active{font-weight:800}
