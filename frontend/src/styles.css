@@ -139,3 +139,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* mobile panel radii */
 @media(max-width:640px){.panel{border-radius:12px}}
+
+/* mobile metric radii */
+@media(max-width:640px){.stat-card{border-radius:12px}}
