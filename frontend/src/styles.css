@@ -205,3 +205,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* actual metric descriptions */
 .metric small{line-height:1.45}
+
+/* actual metric overflow safety */
+.metric{min-width:0;overflow-wrap:anywhere}
