@@ -148,3 +148,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* desktop heading tracking */
 @media(min-width:1280px){.panel h2{letter-spacing:-.015em}}
+
+/* metric hover border */
+.stat-card:hover{border-color:rgba(96,165,250,.4)}
