@@ -49,3 +49,6 @@ button:disabled{opacity:.55;cursor:not-allowed}
 
 /* reduced motion card behavior */
 @media(prefers-reduced-motion:reduce){.stat-card,.panel{transition:none!important;transform:none!important}}
+
+/* touch screen hover fallback */
+@media(hover:none){.stat-card:hover,.panel:hover{transform:none;box-shadow:none}}
