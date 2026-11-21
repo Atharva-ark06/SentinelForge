@@ -187,3 +187,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* print-friendly incident overview */
 @media print{.sidebar,.top-actions{display:none!important}}
+
+/* actual metric card transitions */
+.metric{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
