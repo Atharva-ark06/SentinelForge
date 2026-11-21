@@ -154,3 +154,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* panel hover border */
 .panel:hover{border-color:rgba(96,165,250,.22)}
+
+/* toolbar hover feedback */
+.top-actions button:hover:not(:disabled){filter:brightness(1.08)}
