@@ -9,6 +9,7 @@ from fastapi.testclient import TestClient
 from sentinelforge import api
 
 CASES = [
+    ("/alerts", "status", "\nnew", 422),
     ("/alerts", "severity", "\nhigh", 422),
     ("/events", "event_type", "\nlogin_failure", 422),
     ("/alerts", "status", "resolved\n", 422),
