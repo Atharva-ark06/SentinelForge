@@ -79,3 +79,6 @@ button{touch-action:manipulation}
 
 /* status banner readability */
 .notice{line-height:1.55}
+
+/* panel heading clarity */
+.panel h2,.panel h3{font-weight:750;line-height:1.3}
