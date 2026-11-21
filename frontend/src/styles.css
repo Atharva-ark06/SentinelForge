@@ -12,3 +12,16 @@
 .status-investigating{color:#c1a4ef;background:#282137;border-color:#40315d}
 .status-resolved{color:#91c5a3;background:#1b2420;border-color:#2d4435}
 .status-false_positive{color:#a3acb8;background:#20252c;border-color:#333a44}
+
+/* Accessible, opt-in light appearance for the hosted React dashboard. */
+:root[data-theme="light"]{color-scheme:light;color:#172033;background:#f3f6fb}
+:root[data-theme="light"] body,:root[data-theme="light"] .shell,:root[data-theme="light"] .main{background:#f3f6fb;color:#172033}
+:root[data-theme="light"] .sidebar,:root[data-theme="light"] .topbar,:root[data-theme="light"] .panel,:root[data-theme="light"] .metric{background:#fff;color:#172033;border-color:#cbd5e1}
+:root[data-theme="light"] .brand,:root[data-theme="light"] .sidebar-bottom{border-color:#cbd5e1}
+:root[data-theme="light"] .nav-item,:root[data-theme="light"] .crumb,:root[data-theme="light"] .heading p,:root[data-theme="light"] .metric small{color:#475569}
+:root[data-theme="light"] .nav-item.active,:root[data-theme="light"] .nav-item:hover{background:#e2e8f0;color:#0f172a}
+:root[data-theme="light"] .metric strong,:root[data-theme="light"] h1,:root[data-theme="light"] h2,:root[data-theme="light"] b{color:#172033}
+:root[data-theme="light"] .btn.secondary,:root[data-theme="light"] .icon{background:#f1f5f9;color:#1e293b;border-color:#94a3b8}
+.metric{transition:transform .18s ease,box-shadow .18s ease}.metric:hover{transform:translateY(-2px);box-shadow:0 7px 20px #0002}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #4b91d2;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.metric{transition:none}.metric:hover{transform:none}}
