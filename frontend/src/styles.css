@@ -37,3 +37,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
 /* high contrast keyboard focus */
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #60a5fa;outline-offset:3px}
+
+/* disabled action affordance */
+button:disabled{opacity:.55;cursor:not-allowed}
