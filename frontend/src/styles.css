@@ -118,3 +118,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* sidebar scroll containment */
 .sidebar{overscroll-behavior:contain}
+
+/* horizontal page overflow guard */
+.shell{overflow-x:clip}
