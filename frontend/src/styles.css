@@ -124,3 +124,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* toolbar shrinking */
 .top-actions{min-width:0}
+
+/* long telemetry value wrapping */
+.panel{overflow-wrap:break-word}
