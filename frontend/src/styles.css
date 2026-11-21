@@ -184,3 +184,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* focus scroll clearance */
 .panel:focus-within{scroll-margin-block:20px}
+
+/* print-friendly incident overview */
+@media print{.sidebar,.top-actions{display:none!important}}
