@@ -9,6 +9,7 @@ from fastapi.testclient import TestClient
 from sentinelforge import api
 
 CASES = [
+    ("/events", "username", "", 422),  # username boundary 
     ("/alerts", "status", "NEW", 422),  # status boundary NEW
     ("/alerts", "status", "deleted", 422),  # status boundary deleted
     ("/alerts", "severity", "unknown", 422),  # severity boundary unknown
