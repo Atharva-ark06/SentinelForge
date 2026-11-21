@@ -106,3 +106,6 @@ table td,table th{vertical-align:middle}
 
 /* table row hover scanning */
 table tbody tr:hover{background:rgba(120,150,190,.08)}
+
+/* table row keyboard scanning */
+table tbody tr:focus-within{background:rgba(120,150,190,.12)}
