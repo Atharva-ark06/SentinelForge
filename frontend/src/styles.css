@@ -58,3 +58,6 @@ button:disabled{opacity:.55;cursor:not-allowed}
 
 /* pressed toggle visibility */
 [aria-pressed=true]{font-weight:750}
+
+/* table header hierarchy */
+table th{font-weight:750;letter-spacing:.025em}
