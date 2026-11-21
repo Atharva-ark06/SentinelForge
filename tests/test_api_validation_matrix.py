@@ -10,6 +10,7 @@ from sentinelforge import api
 
 CASES = [
     # Generated individually reviewed boundary cases below.
+    ("/alerts/1/activity", "limit", "1004", 422),  # case 015
     ("/alerts", "offset", "-4", 422),  # case 014
     ("/events", "limit", "1004", 422),  # case 013
     ("/events", "event_type", "invalid_type_11", 422),  # case 012
