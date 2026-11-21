@@ -142,3 +142,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* mobile metric radii */
 @media(max-width:640px){.stat-card{border-radius:12px}}
+
+/* mobile preview notice sizing */
+@media(max-width:640px){.notice{font-size:12px}}
