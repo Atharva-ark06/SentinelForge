@@ -214,3 +214,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* actual metric reduced motion */
 @media(prefers-reduced-motion:reduce){.metric{transition:none!important}.metric:hover{transform:none!important}}
+
+/* actual metric touch behavior */
+@media(hover:none){.metric:hover{transform:none;box-shadow:none}}
