@@ -40,3 +40,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
 /* disabled action affordance */
 button:disabled{opacity:.55;cursor:not-allowed}
+
+/* synthetic preview banner prominence */
+.notice[role=status]{font-weight:650;letter-spacing:.01em}
