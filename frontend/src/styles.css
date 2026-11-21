@@ -160,3 +160,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* toolbar pressed feedback */
 .top-actions button:active:not(:disabled){transform:translateY(1px)}
+
+/* toolbar transition */
+.top-actions button{transition:filter .15s ease,transform .15s ease}
