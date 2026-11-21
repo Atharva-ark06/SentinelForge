@@ -85,3 +85,6 @@ button{touch-action:manipulation}
 
 /* metric value hierarchy */
 .stat-card strong{font-weight:800;letter-spacing:-.02em}
+
+/* sidebar keyboard navigation */
+.sidebar a:focus-visible{outline-offset:-3px}
