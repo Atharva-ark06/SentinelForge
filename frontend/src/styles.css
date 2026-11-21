@@ -121,3 +121,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* horizontal page overflow guard */
 .shell{overflow-x:clip}
+
+/* toolbar shrinking */
+.top-actions{min-width:0}
