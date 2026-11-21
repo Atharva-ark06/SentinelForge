@@ -34,3 +34,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
 /* keyboard focus within cards */
 .stat-card:focus-within,.panel:focus-within{outline:2px solid #5fa8ff;outline-offset:2px}
+
+/* high contrast keyboard focus */
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #60a5fa;outline-offset:3px}
