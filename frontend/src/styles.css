@@ -76,3 +76,6 @@ button{touch-action:manipulation}
 
 /* prevent card grid overflow */
 .stat-card,.panel{min-width:0}
+
+/* status banner readability */
+.notice{line-height:1.55}
