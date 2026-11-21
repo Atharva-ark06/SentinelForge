@@ -97,6 +97,8 @@ async def security_headers(request: Request, call_next):
     else:
         response = await call_next(request)
     response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["Cross-Origin-Resource-Policy"] = "same-site"
+    response.headers["X-Permitted-Cross-Domain-Policies"] = "none"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["Referrer-Policy"] = "no-referrer"
     response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
@@ -121,6 +123,8 @@ def require_ingest_key(request: Request) -> None:
             detail="Write operations are disabled until SENTINELFORGE_API_KEY is configured.",
         )
     supplied = request.headers.get("X-API-Key", "")
+    if len(supplied) > 4096:
+        raise HTTPException(status_code=401, detail="Invalid or missing API key.")
     if not any(hmac.compare_digest(supplied, candidate) for candidate in
                (current_key, API_KEY_PREVIOUS) if candidate):
         raise HTTPException(status_code=401, detail="Invalid or missing API key.")
@@ -224,7 +228,7 @@ def get_events(
     request: Request,
     limit: int = Query(default=100, ge=1, le=1000),
     offset: int = Query(default=0, ge=0, le=100000),
-    event_type: str | None = Query(default=None, pattern="^(login_success|login_failure)$"),
+    event_type: str | None = Query(default=None, pattern=r"^(?:login_success|login_failure)\z"),
     username: str | None = Query(default=None, min_length=1, max_length=128),
     source_ip: str | None = Query(default=None, min_length=1, max_length=64),
     start: datetime | None = None,
@@ -262,10 +266,10 @@ def get_alerts(
     request: Request,
     limit: int = Query(default=100, ge=1, le=1000),
     offset: int = Query(default=0, ge=0, le=100000),
-    severity: str | None = Query(default=None, pattern="^(low|medium|high|critical)$"),
+    severity: str | None = Query(default=None, pattern=r"^(?:low|medium|high|critical)\z"),
     status: str | None = Query(
         default=None,
-        pattern="^(new|acknowledged|investigating|resolved|false_positive)$",
+        pattern=r"^(?:new|acknowledged|investigating|resolved|false_positive)\z",
     ),
     source_ip: str | None = Query(default=None, min_length=1, max_length=64),
 ):

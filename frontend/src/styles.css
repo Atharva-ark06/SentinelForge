@@ -12,3 +12,232 @@
 .status-investigating{color:#c1a4ef;background:#282137;border-color:#40315d}
 .status-resolved{color:#91c5a3;background:#1b2420;border-color:#2d4435}
 .status-false_positive{color:#a3acb8;background:#20252c;border-color:#333a44}
+
+/* Accessible, opt-in light appearance for the hosted React dashboard. */
+:root[data-theme="light"]{color-scheme:light;color:#172033;background:#f3f6fb}
+:root[data-theme="light"] body,:root[data-theme="light"] .shell,:root[data-theme="light"] .main{background:#f3f6fb;color:#172033}
+:root[data-theme="light"] .sidebar,:root[data-theme="light"] .topbar,:root[data-theme="light"] .panel,:root[data-theme="light"] .metric{background:#fff;color:#172033;border-color:#cbd5e1}
+:root[data-theme="light"] .brand,:root[data-theme="light"] .sidebar-bottom{border-color:#cbd5e1}
+:root[data-theme="light"] .nav-item,:root[data-theme="light"] .crumb,:root[data-theme="light"] .heading p,:root[data-theme="light"] .metric small{color:#475569}
+:root[data-theme="light"] .nav-item.active,:root[data-theme="light"] .nav-item:hover{background:#e2e8f0;color:#0f172a}
+:root[data-theme="light"] .metric strong,:root[data-theme="light"] h1,:root[data-theme="light"] h2,:root[data-theme="light"] b{color:#172033}
+:root[data-theme="light"] .btn.secondary,:root[data-theme="light"] .icon{background:#f1f5f9;color:#1e293b;border-color:#94a3b8}
+.metric{transition:transform .18s ease,box-shadow .18s ease}.metric:hover{transform:translateY(-2px);box-shadow:0 7px 20px #0002}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #4b91d2;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.metric{transition:none}.metric:hover{transform:none}}
+
+/* dashboard panels transitions */
+.stat-card,.panel{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+
+/* dashboard card hover depth */
+.stat-card:hover,.panel:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.14)}
+
+/* keyboard focus within cards */
+.stat-card:focus-within,.panel:focus-within{outline:2px solid #5fa8ff;outline-offset:2px}
+
+/* high contrast keyboard focus */
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #60a5fa;outline-offset:3px}
+
+/* disabled action affordance */
+button:disabled{opacity:.55;cursor:not-allowed}
+
+/* synthetic preview banner prominence */
+.notice[role=status]{font-weight:650;letter-spacing:.01em}
+
+/* synthetic preview disclosure emphasis */
+.notice[role=status] b{font-weight:800;text-transform:uppercase}
+
+/* reduced motion card behavior */
+@media(prefers-reduced-motion:reduce){.stat-card,.panel{transition:none!important;transform:none!important}}
+
+/* touch screen hover fallback */
+@media(hover:none){.stat-card:hover,.panel:hover{transform:none;box-shadow:none}}
+
+/* text selection legibility */
+::selection{background:#3568a7;color:#fff}
+
+/* pressed toggle visibility */
+[aria-pressed=true]{font-weight:750}
+
+/* table header hierarchy */
+table th{font-weight:750;letter-spacing:.025em}
+
+/* numeric column scanability */
+table td{font-variant-numeric:tabular-nums}
+
+/* long API errors layout containment */
+.notice.error{overflow-wrap:anywhere}
+
+/* mobile header actions wrapping */
+@media(max-width:480px){.top-actions{flex-wrap:wrap;gap:8px}}
+
+/* mobile button tap latency */
+button{touch-action:manipulation}
+
+/* prevent card grid overflow */
+.stat-card,.panel{min-width:0}
+
+/* status banner readability */
+.notice{line-height:1.55}
+
+/* panel heading clarity */
+.panel h2,.panel h3{font-weight:750;line-height:1.3}
+
+/* metric value hierarchy */
+.stat-card strong{font-weight:800;letter-spacing:-.02em}
+
+/* sidebar keyboard navigation */
+.sidebar a:focus-visible{outline-offset:-3px}
+
+/* header action tap targets */
+.top-actions button{min-height:36px}
+
+/* status banner shape */
+.notice{border-radius:10px}
+
+/* API failure readability */
+.notice.error{font-weight:650}
+
+/* table layout consistency */
+table{border-collapse:separate;border-spacing:0}
+
+/* table cell vertical alignment */
+table td,table th{vertical-align:middle}
+
+/* table row hover scanning */
+table tbody tr:hover{background:rgba(120,150,190,.08)}
+
+/* table row keyboard scanning */
+table tbody tr:focus-within{background:rgba(120,150,190,.12)}
+
+/* search placeholder legibility */
+input::placeholder{opacity:.78}
+
+/* disabled filter clarity */
+input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
+
+/* sidebar scroll containment */
+.sidebar{overscroll-behavior:contain}
+
+/* horizontal page overflow guard */
+.shell{overflow-x:clip}
+
+/* toolbar shrinking */
+.top-actions{min-width:0}
+
+/* long telemetry value wrapping */
+.panel{overflow-wrap:break-word}
+
+/* metric card content wrapping */
+.stat-card{overflow-wrap:anywhere}
+
+/* high contrast focus indicators */
+@media(prefers-contrast:more){button:focus-visible,a:focus-visible{outline-width:4px}}
+
+/* compact mobile tables */
+@media(max-width:640px){table{font-size:12px}}
+
+/* mobile panel radii */
+@media(max-width:640px){.panel{border-radius:12px}}
+
+/* mobile metric radii */
+@media(max-width:640px){.stat-card{border-radius:12px}}
+
+/* mobile preview notice sizing */
+@media(max-width:640px){.notice{font-size:12px}}
+
+/* desktop heading tracking */
+@media(min-width:1280px){.panel h2{letter-spacing:-.015em}}
+
+/* metric hover border */
+.stat-card:hover{border-color:rgba(96,165,250,.4)}
+
+/* panel hover border */
+.panel:hover{border-color:rgba(96,165,250,.22)}
+
+/* toolbar hover feedback */
+.top-actions button:hover:not(:disabled){filter:brightness(1.08)}
+
+/* toolbar pressed feedback */
+.top-actions button:active:not(:disabled){transform:translateY(1px)}
+
+/* toolbar transition */
+.top-actions button{transition:filter .15s ease,transform .15s ease}
+
+/* toolbar reduced motion */
+@media(prefers-reduced-motion:reduce){.top-actions button{transition:none!important;transform:none!important}}
+
+/* preview mode visible stripe */
+.notice[role=status]{border-left:4px solid #60a5fa}
+
+/* error state visible stripe */
+.notice.error{border-left:4px solid #ef4444}
+
+/* panel button wrapping */
+.panel button{white-space:normal}
+
+/* sidebar button wrapping */
+.sidebar button{white-space:normal}
+
+/* metric digit alignment */
+.stat-card{font-variant-numeric:tabular-nums}
+
+/* focus scroll clearance */
+.panel:focus-within{scroll-margin-block:20px}
+
+/* print-friendly incident overview */
+@media print{.sidebar,.top-actions{display:none!important}}
+
+/* actual metric card transitions */
+.metric{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+
+/* actual metric card hover */
+.metric:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(0,0,0,.17)}
+
+/* actual metric card hover border */
+.metric:hover{border-color:rgba(96,165,250,.48)}
+
+/* actual metric number emphasis */
+.metric strong{font-weight:800;letter-spacing:-.025em}
+
+/* actual metric title emphasis */
+.metric-top{font-weight:700}
+
+/* actual metric descriptions */
+.metric small{line-height:1.45}
+
+/* actual metric overflow safety */
+.metric{min-width:0;overflow-wrap:anywhere}
+
+/* actual metric number alignment */
+.metric{font-variant-numeric:tabular-nums}
+
+/* actual metric reduced motion */
+@media(prefers-reduced-motion:reduce){.metric{transition:none!important}.metric:hover{transform:none!important}}
+
+/* actual metric touch behavior */
+@media(hover:none){.metric:hover{transform:none;box-shadow:none}}
+
+/* actual metric keyboard focus */
+.metric:focus-within{outline:2px solid #60a5fa;outline-offset:2px}
+
+/* system health headline emphasis */
+.health-state b{font-weight:800}
+
+/* system health counters */
+.health-row b{font-variant-numeric:tabular-nums}
+
+/* API connection badge emphasis */
+.connection{font-weight:700}
+
+/* active navigation emphasis */
+.nav-item.active{font-weight:800}
+
+/* navigation keyboard focus */
+.nav-item:focus-visible{outline:3px solid #60a5fa;outline-offset:-3px}
+
+/* data provenance badge emphasis */
+.tag{font-weight:750}
+
+/* data provenance disclaimer readability */
+.disclaimer{line-height:1.55;font-weight:550}

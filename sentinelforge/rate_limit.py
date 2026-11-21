@@ -23,8 +23,16 @@ class FixedWindowLimiter:
         timestamp = monotonic() if now is None else now
         with self._lock:
             if client not in self._requests and len(self._requests) >= self.max_clients:
-                # Fail closed when the limiter's identity capacity is exhausted.
-                return False
+                # Reclaim expired identities before rejecting a new client.
+                cutoff = timestamp - self.window_seconds
+                for identity, history in list(self._requests.items()):
+                    while history and history[0] <= cutoff:
+                        history.popleft()
+                    if not history:
+                        del self._requests[identity]
+                if len(self._requests) >= self.max_clients:
+                    # Fail closed if every tracked identity remains active.
+                    return False
             recent = self._requests[client]
             while recent and recent[0] <= timestamp - self.window_seconds:
                 recent.popleft()
