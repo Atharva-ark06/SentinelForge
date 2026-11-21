@@ -9,6 +9,7 @@ from fastapi.testclient import TestClient
 from sentinelforge import api
 
 CASES = [
+    ("/alerts", "limit", "100000", 422),  # limit boundary 100000
     ("/events", "limit", "100000", 422),  # limit boundary 100000
     ("/alerts", "source_ip", "", 422),  # source_ip boundary 
     ("/events", "source_ip", "", 422),  # source_ip boundary 
