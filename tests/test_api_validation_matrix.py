@@ -9,6 +9,7 @@ from fastapi.testclient import TestClient
 from sentinelforge import api
 
 CASES = [
+    ("/alerts", "limit", "0", 422),  # limit boundary 0
     ("/events", "limit", "0", 422),  # limit boundary 0
     # Boundary cases intentionally cover distinct invalid query combinations.
     ("/alerts/1/activity", "limit", "1005", 422),  # case 019
