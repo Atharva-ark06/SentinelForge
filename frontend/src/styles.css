@@ -52,3 +52,6 @@ button:disabled{opacity:.55;cursor:not-allowed}
 
 /* touch screen hover fallback */
 @media(hover:none){.stat-card:hover,.panel:hover{transform:none;box-shadow:none}}
+
+/* text selection legibility */
+::selection{background:#3568a7;color:#fff}
