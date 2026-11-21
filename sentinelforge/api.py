@@ -266,7 +266,7 @@ def get_alerts(
     request: Request,
     limit: int = Query(default=100, ge=1, le=1000),
     offset: int = Query(default=0, ge=0, le=100000),
-    severity: str | None = Query(default=None, pattern="^(low|medium|high|critical)$"),
+    severity: str | None = Query(default=None, pattern=r"\A(?:low|medium|high|critical)\Z"),
     status: str | None = Query(
         default=None,
         pattern="^(new|acknowledged|investigating|resolved|false_positive)$",
