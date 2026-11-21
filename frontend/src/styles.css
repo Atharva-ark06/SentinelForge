@@ -181,3 +181,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* metric digit alignment */
 .stat-card{font-variant-numeric:tabular-nums}
+
+/* focus scroll clearance */
+.panel:focus-within{scroll-margin-block:20px}
