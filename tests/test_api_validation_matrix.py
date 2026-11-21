@@ -9,6 +9,7 @@ from fastapi.testclient import TestClient
 from sentinelforge import api
 
 CASES = [
+    ("/alerts", "severity", "unknown", 422),  # severity boundary unknown
     ("/alerts", "severity", "CRITICAL", 422),  # severity boundary CRITICAL
     ("/events", "event_type", "login-failure", 422),  # event_type boundary login-failure
     ("/events", "event_type", "LOGIN_FAILURE", 422),  # event_type boundary LOGIN_FAILURE
