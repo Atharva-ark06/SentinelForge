@@ -25,3 +25,6 @@
 .metric{transition:transform .18s ease,box-shadow .18s ease}.metric:hover{transform:translateY(-2px);box-shadow:0 7px 20px #0002}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #4b91d2;outline-offset:3px}
 @media(prefers-reduced-motion:reduce){.metric{transition:none}.metric:hover{transform:none}}
+
+/* dashboard panels transitions */
+.stat-card,.panel{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
