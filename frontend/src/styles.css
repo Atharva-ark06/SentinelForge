@@ -115,3 +115,6 @@ input::placeholder{opacity:.78}
 
 /* disabled filter clarity */
 input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
+
+/* sidebar scroll containment */
+.sidebar{overscroll-behavior:contain}
