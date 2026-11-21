@@ -228,7 +228,7 @@ def get_events(
     request: Request,
     limit: int = Query(default=100, ge=1, le=1000),
     offset: int = Query(default=0, ge=0, le=100000),
-    event_type: str | None = Query(default=None, pattern=r"\A(?:login_success|login_failure)\Z"),
+    event_type: str | None = Query(default=None, pattern=r"^(?:login_success|login_failure)\z"),
     username: str | None = Query(default=None, min_length=1, max_length=128),
     source_ip: str | None = Query(default=None, min_length=1, max_length=64),
     start: datetime | None = None,
@@ -266,10 +266,10 @@ def get_alerts(
     request: Request,
     limit: int = Query(default=100, ge=1, le=1000),
     offset: int = Query(default=0, ge=0, le=100000),
-    severity: str | None = Query(default=None, pattern=r"\A(?:low|medium|high|critical)\Z"),
+    severity: str | None = Query(default=None, pattern=r"^(?:low|medium|high|critical)\z"),
     status: str | None = Query(
         default=None,
-        pattern=r"\A(?:new|acknowledged|investigating|resolved|false_positive)\Z",
+        pattern=r"^(?:new|acknowledged|investigating|resolved|false_positive)\z",
     ),
     source_ip: str | None = Query(default=None, min_length=1, max_length=64),
 ):
