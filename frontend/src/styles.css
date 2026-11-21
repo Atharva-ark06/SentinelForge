@@ -238,3 +238,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* data provenance badge emphasis */
 .tag{font-weight:750}
+
+/* data provenance disclaimer readability */
+.disclaimer{line-height:1.55;font-weight:550}
