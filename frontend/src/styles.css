@@ -91,3 +91,6 @@ button{touch-action:manipulation}
 
 /* header action tap targets */
 .top-actions button{min-height:36px}
+
+/* status banner shape */
+.notice{border-radius:10px}
