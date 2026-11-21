@@ -103,3 +103,6 @@ table{border-collapse:separate;border-spacing:0}
 
 /* table cell vertical alignment */
 table td,table th{vertical-align:middle}
+
+/* table row hover scanning */
+table tbody tr:hover{background:rgba(120,150,190,.08)}
