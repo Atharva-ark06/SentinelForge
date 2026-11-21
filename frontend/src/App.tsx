@@ -20,6 +20,7 @@ const sev=(s:string)=>"severity "+(s==="medium"?"medium":s==="high"||s==="critic
 export default function App(){
  const requestVersion=useRef(0);
  const [preview,setPreview]=useState(false);
+ const [previewDismissed,setPreviewDismissed]=useState(false);
  const [theme,setTheme]=useState<"dark"|"light">(()=>{try{return localStorage.getItem("sentinelforge-theme")==="light"?"light":"dark"}catch{return "dark"}});
  useEffect(()=>{document.documentElement.dataset.theme=theme;try{localStorage.setItem("sentinelforge-theme",theme)}catch{/* storage disabled */}},[theme]);
  const [page,setPage]=useState<Page>("Overview"),[events,setEvents]=useState<EventRow[]>([]),[alerts,setAlerts]=useState<AlertRow[]>([]),[metrics,setMetrics]=useState<Metrics|null>(null),[health,setHealth]=useState<Health|null>(null),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[error,setError]=useState(""),[query,setQuery]=useState(""),[severity,setSeverity]=useState("all"),[expanded,setExpanded]=useState<number|null>(null),[notice,setNotice]=useState(""),[mobile,setMobile]=useState(false);
