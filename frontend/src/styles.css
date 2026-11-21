@@ -211,3 +211,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* actual metric number alignment */
 .metric{font-variant-numeric:tabular-nums}
+
+/* actual metric reduced motion */
+@media(prefers-reduced-motion:reduce){.metric{transition:none!important}.metric:hover{transform:none!important}}
