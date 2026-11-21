@@ -70,3 +70,6 @@ table td{font-variant-numeric:tabular-nums}
 
 /* mobile header actions wrapping */
 @media(max-width:480px){.top-actions{flex-wrap:wrap;gap:8px}}
+
+/* mobile button tap latency */
+button{touch-action:manipulation}
