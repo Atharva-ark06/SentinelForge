@@ -178,3 +178,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* sidebar button wrapping */
 .sidebar button{white-space:normal}
+
+/* metric digit alignment */
+.stat-card{font-variant-numeric:tabular-nums}
