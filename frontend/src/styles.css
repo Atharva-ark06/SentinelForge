@@ -130,3 +130,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* metric card content wrapping */
 .stat-card{overflow-wrap:anywhere}
+
+/* high contrast focus indicators */
+@media(prefers-contrast:more){button:focus-visible,a:focus-visible{outline-width:4px}}
