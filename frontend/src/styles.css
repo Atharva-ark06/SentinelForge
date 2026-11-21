@@ -127,3 +127,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* long telemetry value wrapping */
 .panel{overflow-wrap:break-word}
+
+/* metric card content wrapping */
+.stat-card{overflow-wrap:anywhere}
