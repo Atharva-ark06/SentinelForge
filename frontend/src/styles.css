@@ -163,3 +163,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* toolbar transition */
 .top-actions button{transition:filter .15s ease,transform .15s ease}
+
+/* toolbar reduced motion */
+@media(prefers-reduced-motion:reduce){.top-actions button{transition:none!important;transform:none!important}}
