@@ -228,7 +228,7 @@ def get_events(
     request: Request,
     limit: int = Query(default=100, ge=1, le=1000),
     offset: int = Query(default=0, ge=0, le=100000),
-    event_type: str | None = Query(default=None, pattern="^(login_success|login_failure)$"),
+    event_type: str | None = Query(default=None, pattern=r"\A(?:login_success|login_failure)\Z"),
     username: str | None = Query(default=None, min_length=1, max_length=128),
     source_ip: str | None = Query(default=None, min_length=1, max_length=64),
     start: datetime | None = None,
