@@ -28,3 +28,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
 /* dashboard panels transitions */
 .stat-card,.panel{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+
+/* dashboard card hover depth */
+.stat-card:hover,.panel:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.14)}
