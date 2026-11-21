@@ -94,3 +94,6 @@ button{touch-action:manipulation}
 
 /* status banner shape */
 .notice{border-radius:10px}
+
+/* API failure readability */
+.notice.error{font-weight:650}
