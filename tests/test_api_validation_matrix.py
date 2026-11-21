@@ -9,6 +9,16 @@ from fastapi.testclient import TestClient
 from sentinelforge import api
 
 CASES = [
+    ("/events", "offset", "100001", 422),
+    ("/alerts/1/activity", "limit", "1001", 422),
+    ("/alerts", "limit", "1001", 422),
+    ("/events", "limit", "1001", 422),
+    ("/events", "end", "not-a-date", 422),
+    ("/events", "start", "not-a-date", 422),
+    ("/alerts", "source_ip", "not-an-ip", 400),
+    ("/events", "source_ip", "not-an-ip", 400),
+    ("/events", "end", "2026-11-21T10:00:00", 400),
+    ("/events", "start", "2026-11-21T10:00:00", 400),
     ("/alerts", "status", "\nnew", 422),
     ("/alerts", "severity", "\nhigh", 422),
     ("/events", "event_type", "\nlogin_failure", 422),
