@@ -88,3 +88,6 @@ button{touch-action:manipulation}
 
 /* sidebar keyboard navigation */
 .sidebar a:focus-visible{outline-offset:-3px}
+
+/* header action tap targets */
+.top-actions button{min-height:36px}
