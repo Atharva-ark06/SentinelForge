@@ -109,3 +109,6 @@ table tbody tr:hover{background:rgba(120,150,190,.08)}
 
 /* table row keyboard scanning */
 table tbody tr:focus-within{background:rgba(120,150,190,.12)}
+
+/* search placeholder legibility */
+input::placeholder{opacity:.78}
