@@ -46,3 +46,6 @@ button:disabled{opacity:.55;cursor:not-allowed}
 
 /* synthetic preview disclosure emphasis */
 .notice[role=status] b{font-weight:800;text-transform:uppercase}
+
+/* reduced motion card behavior */
+@media(prefers-reduced-motion:reduce){.stat-card,.panel{transition:none!important;transform:none!important}}
