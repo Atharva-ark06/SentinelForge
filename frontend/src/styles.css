@@ -151,3 +151,6 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* metric hover border */
 .stat-card:hover{border-color:rgba(96,165,250,.4)}
+
+/* panel hover border */
+.panel:hover{border-color:rgba(96,165,250,.22)}
