@@ -97,3 +97,6 @@ button{touch-action:manipulation}
 
 /* API failure readability */
 .notice.error{font-weight:650}
+
+/* table layout consistency */
+table{border-collapse:separate;border-spacing:0}
