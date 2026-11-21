@@ -123,6 +123,8 @@ def require_ingest_key(request: Request) -> None:
             detail="Write operations are disabled until SENTINELFORGE_API_KEY is configured.",
         )
     supplied = request.headers.get("X-API-Key", "")
+    if len(supplied) > 4096:
+        raise HTTPException(status_code=401, detail="Invalid or missing API key.")
     if not any(hmac.compare_digest(supplied, candidate) for candidate in
                (current_key, API_KEY_PREVIOUS) if candidate):
         raise HTTPException(status_code=401, detail="Invalid or missing API key.")
