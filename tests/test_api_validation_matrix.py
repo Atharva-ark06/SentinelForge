@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 from sentinelforge import api
 
 CASES = [
-    # Generated individually reviewed boundary cases below.
+    # Boundary cases intentionally cover distinct invalid query combinations.
     ("/alerts/1/activity", "limit", "1005", 422),  # case 019
     ("/alerts", "offset", "-5", 422),  # case 018
     ("/events", "limit", "1005", 422),  # case 017
