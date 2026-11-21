@@ -67,3 +67,6 @@ table td{font-variant-numeric:tabular-nums}
 
 /* long API errors layout containment */
 .notice.error{overflow-wrap:anywhere}
+
+/* mobile header actions wrapping */
+@media(max-width:480px){.top-actions{flex-wrap:wrap;gap:8px}}
