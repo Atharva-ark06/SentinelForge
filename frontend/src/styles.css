@@ -61,3 +61,6 @@ button:disabled{opacity:.55;cursor:not-allowed}
 
 /* table header hierarchy */
 table th{font-weight:750;letter-spacing:.025em}
+
+/* numeric column scanability */
+table td{font-variant-numeric:tabular-nums}
