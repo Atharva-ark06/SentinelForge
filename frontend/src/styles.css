@@ -100,3 +100,6 @@ button{touch-action:manipulation}
 
 /* table layout consistency */
 table{border-collapse:separate;border-spacing:0}
+
+/* table cell vertical alignment */
+table td,table th{vertical-align:middle}
