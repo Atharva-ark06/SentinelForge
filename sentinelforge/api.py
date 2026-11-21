@@ -269,7 +269,7 @@ def get_alerts(
     severity: str | None = Query(default=None, pattern=r"\A(?:low|medium|high|critical)\Z"),
     status: str | None = Query(
         default=None,
-        pattern="^(new|acknowledged|investigating|resolved|false_positive)$",
+        pattern=r"\A(?:new|acknowledged|investigating|resolved|false_positive)\Z",
     ),
     source_ip: str | None = Query(default=None, min_length=1, max_length=64),
 ):
