@@ -9,6 +9,7 @@ from fastapi.testclient import TestClient
 from sentinelforge import api
 
 CASES = [
+    ("/alerts/1/activity", "offset", "-999", 422),  # offset boundary -999
     ("/alerts", "offset", "-999", 422),  # offset boundary -999
     ("/events", "offset", "-999", 422),  # offset boundary -999
     ("/alerts/1/activity", "limit", "0", 422),  # limit boundary 0
