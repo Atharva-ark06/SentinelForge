@@ -9,6 +9,7 @@ from fastapi.testclient import TestClient
 from sentinelforge import api
 
 CASES = [
+    ("/events", "offset", "100001", 422),
     ("/alerts/1/activity", "limit", "100000", 422),  # limit boundary 100000
     ("/alerts", "limit", "100000", 422),  # limit boundary 100000
     ("/events", "limit", "100000", 422),  # limit boundary 100000
