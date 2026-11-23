@@ -73,3 +73,11 @@ python .\scripts\load_demo.py
 | Data disappears after redeploy | Move SQLite to persistent storage; many free hosting filesystems are ephemeral. |
 | Sensor returns HTTP 401/503 | Set the same `SENTINELFORGE_API_KEY` on the API and sensor process. |
 | Demo ingestion fails | Set the key in the shell running `scripts/load_demo.py`; never move it into frontend configuration. |
+
+## Public GitHub Pages preview fallback
+
+A production Pages build without `VITE_API_BASE_URL` intentionally opens in **SYNTHETIC PREVIEW** mode with a visible disclosure. The 36 example login events and eight example alerts are generated entirely in browser memory from reserved TEST-NET addresses; none is a recorded incident. This makes the static dashboard useful without exposing live telemetry, API credentials or a public write endpoint. The preview switch is reversible and does not write to SQLite.
+
+To use live API data, deploy a separately authenticated HTTPS API and configure `VITE_API_BASE_URL`. A configured API URL disables automatic preview mode. An unreachable API displays an explicit connection error; preview can still be enabled manually. During local development, Vite proxies `/health`, `/events`, `/alerts`, and `/metrics` to FastAPI.
+
+A green GitHub Pages deployment means only that the frontend assets were published; it does **not** mean a live API exists or is authenticated. Verify API access and confidentiality separately.

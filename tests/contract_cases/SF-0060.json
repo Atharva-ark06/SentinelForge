@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0060",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "description": "Reject malformed synthetic ingestion payload variant 4 before storage",
+  "changes": {
+    "timestamp": "2026-11-23T12:00:00"
+  }
+}

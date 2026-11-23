@@ -1,0 +1,12 @@
+{
+  "case_id": "SF-0032",
+  "synthetic": true,
+  "kind": "ingest_valid",
+  "description": "Validate authorized login_success ingestion and normalized readback from 192.0.2.33 in an isolated synthetic scenario",
+  "changes": {
+    "event_type": "login_success",
+    "username": "demo-user-032",
+    "source_ip": "192.0.2.33",
+    "host": "lab-node-9"
+  }
+}

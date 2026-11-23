@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0077",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "description": "Reject malformed synthetic ingestion payload variant 5 before storage",
+  "changes": {
+    "password": "never-record-77"
+  }
+}

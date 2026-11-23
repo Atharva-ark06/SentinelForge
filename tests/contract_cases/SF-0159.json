@@ -1,0 +1,8 @@
+{
+  "case_id": "SF-0159",
+  "synthetic": true,
+  "kind": "query_invalid",
+  "description": "Reject invalid API query boundary 159 without database state changes",
+  "path": "/alerts?source_ip=not-an-ip-159",
+  "status": 400
+}

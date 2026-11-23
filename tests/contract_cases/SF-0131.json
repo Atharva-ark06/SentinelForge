@@ -1,0 +1,7 @@
+{
+  "case_id": "SF-0131",
+  "synthetic": true,
+  "kind": "auth_reject",
+  "description": "Reject unauthorized synthetic ingestion using invalid API credential candidate 131",
+  "key": "TEST-SECRET"
+}

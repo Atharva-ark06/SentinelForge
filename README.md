@@ -33,6 +33,15 @@
 **Frontend:** React · TypeScript · Vite · Tailwind CSS · Recharts · Lucide  
 **Sensor:** Python Windows Event Log reader
 
+
+## November 2026 security and dashboard upgrade (PR in review)
+
+This branch hardens the synthetic-demo workflow and fixes a local API integration issue while preserving the existing React SOC interface. The GitHub Pages build **automatically enters a clearly marked synthetic preview when `VITE_API_BASE_URL` is unset**; its 36 illustrative authentication events and eight example alerts use RFC 5737 TEST-NET addresses and never write to SQLite. The top-right theme switcher, legible dashboard cards, motion preferences and keyboard focus have been refined. Local Vite now proxies `/metrics` in addition to `/health`, `/events` and `/alerts`.
+
+**Security boundaries:** write operations continue to require the configured shared key, with read protection available via `SENTINELFORGE_PROTECT_READS=true`. This is **not** a complete user authentication/authorization system. The synthetic loader now refuses to send its API credential over plaintext HTTP to non-loopback destinations. The public Pages UI never receives the ingestion secret, and it cannot securely display sensitive telemetry without an independently authenticated backend.
+
+The PR adds a data-driven set of isolated API contract fixtures, frontend regression assertions, and documents how to verify the Pages/API boundary in [deployment guidance](docs/deployment.md). Run `python -m pytest -q`, `cd frontend && npm run build`, and review GitHub Actions **on the final commit**; previous green runs cannot validate newly changed code. CodeQL and dependency audits are automated, but their success does not prove the absence of every vulnerability.
+
 ## Architecture
 
 ```text

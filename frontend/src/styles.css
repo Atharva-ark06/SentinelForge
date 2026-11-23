@@ -241,3 +241,18 @@ input:disabled,select:disabled{cursor:not-allowed;opacity:.65}
 
 /* data provenance disclaimer readability */
 .disclaimer{line-height:1.55;font-weight:550}
+
+/* 2026 dashboard polish: preserve the existing dark/light theme variables. */
+.heading h1{font-size:clamp(25px,2.8vw,35px);font-weight:800;letter-spacing:-.045em;line-height:1.17}
+.heading p,.panel-head p{font-size:12px;line-height:1.7}
+.metric{transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;outline:1px solid transparent}
+.metric:hover{transform:translateY(-4px);border-color:var(--border,#3d515c);box-shadow:0 15px 35px rgba(0,0,0,.13);z-index:1}
+.metric strong{font-weight:800;font-variant-numeric:tabular-nums}
+.panel{transition:border-color .2s ease,box-shadow .2s ease}
+.panel:hover{box-shadow:0 16px 44px rgba(0,0,0,.1)}
+.rule-card:hover{transform:translateY(-3px);transition:transform .2s ease,box-shadow .2s ease}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #5ce1d5;outline-offset:3px}
+.top-actions .icon[aria-pressed]{border:1px solid currentColor;border-radius:8px;padding:7px}
+.notice[role=status]{font-size:12px;font-weight:600;line-height:1.65}
+@media(max-width:900px){.heading{align-items:flex-start}.top-actions{gap:8px}.metric strong{font-size:clamp(22px,3vw,30px)}}
+@media(prefers-reduced-motion:reduce){.metric,.panel,.rule-card{transition:none!important}.metric:hover,.rule-card:hover{transform:none!important}}

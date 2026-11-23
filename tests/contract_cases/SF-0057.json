@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0057",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "description": "Reject malformed synthetic ingestion payload variant 1 before storage",
+  "changes": {
+    "event_type": "unsupported_57"
+  }
+}

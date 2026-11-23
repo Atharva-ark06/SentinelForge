@@ -4,9 +4,18 @@ import json
 import os
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
+from urllib.parse import urlparse
+from ipaddress import ip_address
 
 BASE = os.environ.get("SENTINELFORGE_EVENTS_URL", "http://127.0.0.1:8000/events")
 API_KEY = os.environ.get("SENTINELFORGE_API_KEY", "").strip()
+target = urlparse(BASE)
+try:
+    localhost = target.hostname in {"localhost", "127.0.0.1", "::1"} or ip_address(target.hostname or "").is_loopback
+except ValueError:
+    localhost = False
+if target.scheme not in {"https", "http"} or not target.hostname or (target.scheme == "http" and not localhost):
+    raise SystemExit("Refusing to send API credentials to an invalid or non-loopback HTTP destination. Use HTTPS.")
 if not API_KEY:
     raise SystemExit("Set SENTINELFORGE_API_KEY to the same secret configured on the API before loading demo events.")
 start = datetime.now(timezone.utc) - timedelta(minutes=8)

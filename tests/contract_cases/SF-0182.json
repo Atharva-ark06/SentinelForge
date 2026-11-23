@@ -1,0 +1,8 @@
+{
+  "case_id": "SF-0182",
+  "synthetic": true,
+  "kind": "query_invalid",
+  "description": "Reject invalid API query boundary 182 without database state changes",
+  "path": "/alerts?severity=invalid_182",
+  "status": 422
+}
