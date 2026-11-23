@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0050",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "description": "Reject malformed synthetic ingestion payload variant 2 before storage",
+  "changes": {
+    "source_ip": "999.0.2.50"
+  }
+}
