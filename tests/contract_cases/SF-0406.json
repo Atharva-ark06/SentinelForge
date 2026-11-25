@@ -1,0 +1,7 @@
+{
+  "case_id": "SF-0406",
+  "synthetic": true,
+  "kind": "query_valid",
+  "path": "/alerts?offset=100000",
+  "description": "Accepted query parameter contract 406"
+}
