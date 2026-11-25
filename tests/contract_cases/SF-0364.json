@@ -1,0 +1,8 @@
+{
+  "case_id": "SF-0364",
+  "synthetic": true,
+  "kind": "query_invalid",
+  "description": "Reject invalid query 364",
+  "path": "/alerts?severity=unsupported_364",
+  "status": 422
+}
