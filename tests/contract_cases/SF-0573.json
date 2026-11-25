@@ -1,0 +1,8 @@
+{
+  "case_id": "SF-0573",
+  "synthetic": true,
+  "kind": "query_invalid",
+  "path": "/alerts?status=other_573",
+  "status": 422,
+  "description": "Reject invalid API query 573"
+}
