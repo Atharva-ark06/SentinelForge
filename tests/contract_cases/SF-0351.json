@@ -1,0 +1,8 @@
+{
+  "case_id": "SF-0351",
+  "synthetic": true,
+  "kind": "query_invalid",
+  "description": "Reject invalid query 351",
+  "path": "/events?limit=1017",
+  "status": 422
+}
