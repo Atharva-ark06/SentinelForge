@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0505",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "changes": {
+    "source_ip": "0.0.0.999"
+  },
+  "description": "Reject invalid event 505 before storage"
+}
