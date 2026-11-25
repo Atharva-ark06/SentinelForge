@@ -1,0 +1,12 @@
+{
+  "case_id": "SF-0211",
+  "synthetic": true,
+  "kind": "ingest_valid",
+  "description": "Authorized normalized synthetic event 211",
+  "changes": {
+    "event_type": "login_failure",
+    "username": "qa-user-211",
+    "source_ip": "192.0.2.30",
+    "host": "lab-gateway-211"
+  }
+}
