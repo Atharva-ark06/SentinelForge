@@ -42,6 +42,29 @@ This branch hardens the synthetic-demo workflow and fixes a local API integratio
 
 The PR adds a data-driven set of isolated API contract fixtures, frontend regression assertions, and documents how to verify the Pages/API boundary in [deployment guidance](docs/deployment.md). Run `python -m pytest -q`, `cd frontend && npm run build`, and review GitHub Actions **on the final commit**; previous green runs cannot validate newly changed code. CodeQL and dependency audits are automated, but their success does not prove the absence of every vulnerability.
 
+## Full-stack hardening follow-up (PR #35)
+
+The backend detection rules now evaluate **failed authentication events only**. A
+successful login neither triggers a password-guessing alert nor contributes to
+the three-account password-spray threshold; the original event is retained for
+auditing and charts. Regression tests verify this behavior.
+
+The React dashboard now validates **health, event, alert and metrics response
+shapes** before displaying records. JSON masquerading as telemetry or malformed
+records produce a visible API error instead of a silently misleading dashboard.
+Timeline buckets use full timestamps rather than the clock minute alone, so
+events across different dates do not merge in the trend chart. The interface
+also improves keyboard labels, active-page navigation, typography, card hover
+states and reduced-motion handling. Synthetic preview remains explicitly
+disclosed and separate from live data.
+
+**Authentication limitations remain:** The repository uses a shared ingestion
+key, not per-user login, OAuth/Auth0, MFA or RBAC. Never put a shared API key in
+static frontend environment variables. On GitHub Pages, configure a separately
+deployed HTTPS API and an exact CORS allowlist to display live records; absent
+that API, browser-only fictional data is the safe showcase. A green CI check
+is not a penetration-test certification.
+
 ## Architecture
 
 ```text
