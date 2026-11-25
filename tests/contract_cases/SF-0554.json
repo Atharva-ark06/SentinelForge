@@ -1,0 +1,8 @@
+{
+  "case_id": "SF-0554",
+  "synthetic": true,
+  "kind": "query_invalid",
+  "path": "/alerts?offset=100172",
+  "status": 422,
+  "description": "Reject invalid API query 554"
+}
