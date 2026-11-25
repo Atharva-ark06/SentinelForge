@@ -1,0 +1,12 @@
+{
+  "case_id": "SF-0448",
+  "synthetic": true,
+  "kind": "ingest_valid",
+  "changes": {
+    "username": "matrix-user-448",
+    "source_ip": "198.51.100.66",
+    "event_type": "login_success",
+    "host": "authorized-lab-448"
+  },
+  "description": "Authorized synthetic ingest 448"
+}
