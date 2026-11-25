@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0499",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "changes": {
+    "event_type": "login_denied_499"
+  },
+  "description": "Reject invalid event 499 before storage"
+}
