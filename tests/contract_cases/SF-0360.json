@@ -1,0 +1,8 @@
+{
+  "case_id": "SF-0360",
+  "synthetic": true,
+  "kind": "query_invalid",
+  "description": "Reject invalid query 360",
+  "path": "/events?offset=100026",
+  "status": 422
+}
