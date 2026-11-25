@@ -23,6 +23,9 @@ def evaluate_new_event(new_event_id: int, db_path=None) -> list[dict[str, Any]]:
         if current is None:
             return []
         current = dict(current)
+        # Successful logins remain telemetry, but must not trigger failure-only rules.
+        if current["event_type"] != "login_failure":
+            return []
         current_time = _parse_ts(current["timestamp"])
         start = (current_time - WINDOW).isoformat()
         end = current_time.isoformat()
@@ -31,7 +34,7 @@ def evaluate_new_event(new_event_id: int, db_path=None) -> list[dict[str, Any]]:
                AND source_ip = ? ORDER BY timestamp, id""",
             (start, end, current["source_ip"]),
         ).fetchall()
-        recent = [dict(row) for row in recent]
+        recent = [dict(row) for row in recent if row["event_type"] == "login_failure"]
 
     failures_for_user = [
         e for e in recent
