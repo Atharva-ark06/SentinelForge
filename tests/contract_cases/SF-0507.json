@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0507",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "changes": {
+    "event_type": "login_denied_507"
+  },
+  "description": "Reject invalid event 507 before storage"
+}
