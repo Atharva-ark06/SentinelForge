@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0257",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "description": "Reject invalid input variant 257",
+  "changes": {
+    "host": "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
+  }
+}
