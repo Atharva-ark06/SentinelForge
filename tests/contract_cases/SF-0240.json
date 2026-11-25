@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0240",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "description": "Reject malformed blank account case 240",
+  "changes": {
+    "username": "  "
+  }
+}
