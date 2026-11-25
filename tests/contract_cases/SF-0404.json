@@ -1,0 +1,7 @@
+{
+  "case_id": "SF-0404",
+  "synthetic": true,
+  "kind": "query_valid",
+  "path": "/events?event_type=login_success",
+  "description": "Accepted query parameter contract 404"
+}
