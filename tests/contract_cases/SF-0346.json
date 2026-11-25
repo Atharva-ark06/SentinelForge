@@ -1,0 +1,8 @@
+{
+  "case_id": "SF-0346",
+  "synthetic": true,
+  "kind": "query_invalid",
+  "description": "Bound invalid query input 346",
+  "path": "/alerts?offset=100012",
+  "status": 422
+}
