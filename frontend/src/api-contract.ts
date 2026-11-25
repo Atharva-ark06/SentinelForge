@@ -4,7 +4,7 @@
 type JsonRecord = Record<string, unknown>;
 const record = (value: unknown): value is JsonRecord =>
   typeof value === "object" && value !== null && !Array.isArray(value);
-const text = (value: unknown) => typeof value === "string";
+const text = (value: unknown): value is string => typeof value === "string";
 const count = (value: unknown) => typeof value === "number" && Number.isSafeInteger(value) && value >= 0;
 const counterMap = (value: unknown): value is Record<string, number> =>
   record(value) && Object.values(value).every(count);
