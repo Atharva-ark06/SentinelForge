@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0283",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "description": "Reject malformed synthetic field 283",
+  "changes": {
+    "source_ip": "999.0.2.44"
+  }
+}
