@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0492",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "changes": {
+    "host": "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
+  },
+  "description": "Reject invalid event 492 before storage"
+}
