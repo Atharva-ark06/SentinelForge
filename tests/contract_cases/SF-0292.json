@@ -1,0 +1,7 @@
+{
+  "case_id": "SF-0292",
+  "synthetic": true,
+  "kind": "auth_reject",
+  "description": "API key negative-path 292",
+  "key": "invalid-secret-case-292-xxxxxxxxx"
+}
