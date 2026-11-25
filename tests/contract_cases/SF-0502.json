@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0502",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "changes": {
+    "timestamp": "2026-11-23T09:00:00"
+  },
+  "description": "Reject invalid event 502 before storage"
+}
