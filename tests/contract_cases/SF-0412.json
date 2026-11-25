@@ -1,0 +1,7 @@
+{
+  "case_id": "SF-0412",
+  "synthetic": true,
+  "kind": "query_valid",
+  "path": "/events?source_ip=2001:db8::1",
+  "description": "Accepted query parameter contract 412"
+}
