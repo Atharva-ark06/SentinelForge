@@ -1,0 +1,8 @@
+{
+  "case_id": "SF-0555",
+  "synthetic": true,
+  "kind": "query_invalid",
+  "path": "/events?event_type=other_555",
+  "status": 422,
+  "description": "Reject invalid API query 555"
+}
