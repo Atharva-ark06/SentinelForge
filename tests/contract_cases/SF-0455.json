@@ -1,0 +1,12 @@
+{
+  "case_id": "SF-0455",
+  "synthetic": true,
+  "kind": "ingest_valid",
+  "changes": {
+    "username": "matrix-user-455",
+    "source_ip": "198.51.100.73",
+    "event_type": "login_failure",
+    "host": "authorized-lab-455"
+  },
+  "description": "Authorized synthetic ingest 455"
+}
