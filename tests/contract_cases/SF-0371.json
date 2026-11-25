@@ -1,0 +1,8 @@
+{
+  "case_id": "SF-0371",
+  "synthetic": true,
+  "kind": "query_invalid",
+  "description": "Reject malformed request filters 371",
+  "path": "/events?event_type=unsupported_371",
+  "status": 422
+}
