@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0286",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "description": "Reject malformed synthetic field 286",
+  "changes": {
+    "event_type": "login_unknown_286"
+  }
+}
