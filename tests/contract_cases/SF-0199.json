@@ -1,0 +1,12 @@
+{
+  "case_id": "SF-0199",
+  "synthetic": true,
+  "kind": "ingest_valid",
+  "description": "Validate authorized failed synthetic login for unique lab identity and reserved IP 199",
+  "changes": {
+    "event_type": "login_failure",
+    "username": "qa-user-199",
+    "source_ip": "192.0.2.18",
+    "host": "lab-gateway-199"
+  }
+}

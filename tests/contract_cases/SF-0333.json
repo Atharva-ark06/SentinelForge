@@ -1,0 +1,7 @@
+{
+  "case_id": "SF-0333",
+  "synthetic": true,
+  "kind": "auth_reject",
+  "description": "Reject malformed credential 333",
+  "key": "invalid-secret-case-333-xxxx"
+}

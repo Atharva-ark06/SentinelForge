@@ -1,0 +1,12 @@
+{
+  "case_id": "SF-0235",
+  "synthetic": true,
+  "kind": "ingest_valid",
+  "description": "Synthetic authorized event 235: canonical reserved source identity and host",
+  "changes": {
+    "event_type": "login_failure",
+    "username": "qa-user-235",
+    "source_ip": "192.0.2.54",
+    "host": "lab-gateway-235"
+  }
+}

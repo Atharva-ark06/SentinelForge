@@ -1,0 +1,8 @@
+{
+  "case_id": "SF-0341",
+  "synthetic": true,
+  "kind": "query_invalid",
+  "description": "Bound invalid query input 341",
+  "path": "/alerts?status=unsupported_341",
+  "status": 422
+}

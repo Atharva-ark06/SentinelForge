@@ -1,0 +1,7 @@
+{
+  "case_id": "SF-0325",
+  "synthetic": true,
+  "kind": "auth_reject",
+  "description": "Reject unrecognized API credential 325",
+  "key": "invalid-secret-case-325-xxxxxxxxxxxxxxxxxxx"
+}

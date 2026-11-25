@@ -1,0 +1,12 @@
+{
+  "case_id": "SF-0233",
+  "synthetic": true,
+  "kind": "ingest_valid",
+  "description": "Synthetic authorized event 233: canonical reserved source identity and host",
+  "changes": {
+    "event_type": "login_failure",
+    "username": "qa-user-233",
+    "source_ip": "192.0.2.52",
+    "host": "lab-gateway-233"
+  }
+}

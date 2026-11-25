@@ -1,0 +1,12 @@
+{
+  "case_id": "SF-0220",
+  "synthetic": true,
+  "kind": "ingest_valid",
+  "description": "Authorized normalized synthetic event 220",
+  "changes": {
+    "event_type": "login_success",
+    "username": "qa-user-220",
+    "source_ip": "192.0.2.39",
+    "host": "lab-gateway-220"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0261",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "description": "Invalid Pydantic field variant 261",
+  "changes": {
+    "host": "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
+  }
+}

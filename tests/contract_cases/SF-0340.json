@@ -1,0 +1,8 @@
+{
+  "case_id": "SF-0340",
+  "synthetic": true,
+  "kind": "query_invalid",
+  "description": "Bound invalid query input 340",
+  "path": "/alerts?severity=unsupported_340",
+  "status": 422
+}

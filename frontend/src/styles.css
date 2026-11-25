@@ -256,3 +256,20 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 .notice[role=status]{font-size:12px;font-weight:600;line-height:1.65}
 @media(max-width:900px){.heading{align-items:flex-start}.top-actions{gap:8px}.metric strong{font-size:clamp(22px,3vw,30px)}}
 @media(prefers-reduced-motion:reduce){.metric,.panel,.rule-card{transition:none!important}.metric:hover,.rule-card:hover{transform:none!important}}
+
+/* PR35 accessible telemetry refinements: stronger visual hierarchy and hover. */
+.metric,.panel,.rule-card{border-radius:12px}
+.metric-top,.health-state b,.panel-head h2,.rule-card h2{font-weight:800}
+table td b{font-size:12px;font-weight:700}
+table th{font-size:10px;letter-spacing:.04em}
+table td{font-size:12px;line-height:1.55}
+.tools input,.tools select{font-size:12px;min-height:38px}
+.top-actions .icon{min-width:38px;min-height:38px}
+.nav-item[aria-current="page"]{box-shadow:inset 3px 0 0 #73cda2}
+@media(hover:hover){
+  .panel:hover,.metric:hover,.rule-card:hover{border-color:#649a87}
+  .nav-item:hover,.btn:hover:not(:disabled){filter:brightness(1.12)}
+}
+@media(prefers-reduced-motion:reduce){
+  .panel,.metric,.rule-card,.top-actions button{animation:none!important;transition:none!important}
+}

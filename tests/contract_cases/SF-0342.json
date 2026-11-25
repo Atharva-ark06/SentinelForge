@@ -1,0 +1,8 @@
+{
+  "case_id": "SF-0342",
+  "synthetic": true,
+  "kind": "query_invalid",
+  "description": "Bound invalid query input 342",
+  "path": "/events?start=not-a-timestamp-342",
+  "status": 422
+}

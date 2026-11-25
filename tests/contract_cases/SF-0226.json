@@ -1,0 +1,12 @@
+{
+  "case_id": "SF-0226",
+  "synthetic": true,
+  "kind": "ingest_valid",
+  "description": "Synthetic authorized event 226: canonical reserved source identity and host",
+  "changes": {
+    "event_type": "login_success",
+    "username": "qa-user-226",
+    "source_ip": "192.0.2.45",
+    "host": "lab-gateway-226"
+  }
+}

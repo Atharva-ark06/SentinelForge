@@ -1,0 +1,8 @@
+{
+  "case_id": "SF-0376",
+  "synthetic": true,
+  "kind": "query_invalid",
+  "description": "Reject malformed request filters 376",
+  "path": "/events?offset=100042",
+  "status": 422
+}

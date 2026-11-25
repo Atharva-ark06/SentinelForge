@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0262",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "description": "Invalid Pydantic field variant 262",
+  "changes": {
+    "event_type": "login_unknown_262"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0256",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "description": "Reject invalid input variant 256",
+  "changes": {
+    "username": "  "
+  }
+}
