@@ -1,0 +1,8 @@
+{
+  "case_id": "SF-0335",
+  "synthetic": true,
+  "kind": "query_invalid",
+  "description": "Bound invalid query input 335",
+  "path": "/events?limit=1001",
+  "status": 422
+}
