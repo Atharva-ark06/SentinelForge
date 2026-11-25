@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0277",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "description": "Reject malformed synthetic field 277",
+  "changes": {
+    "host": "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
+  }
+}
