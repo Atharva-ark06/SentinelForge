@@ -1,0 +1,12 @@
+{
+  "case_id": "SF-0192",
+  "synthetic": true,
+  "kind": "ingest_valid",
+  "description": "Validate authorized successful synthetic login for unique lab identity and reserved IP 192",
+  "changes": {
+    "event_type": "login_success",
+    "username": "qa-user-192",
+    "source_ip": "192.0.2.11",
+    "host": "lab-gateway-192"
+  }
+}
