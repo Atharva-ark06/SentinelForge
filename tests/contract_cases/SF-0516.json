@@ -1,0 +1,7 @@
+{
+  "case_id": "SF-0516",
+  "synthetic": true,
+  "kind": "auth_reject",
+  "key": "unauthorized-516-ppppppppppppppp",
+  "description": "Refuse incorrect ingest key 516"
+}
