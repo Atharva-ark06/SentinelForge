@@ -1,0 +1,7 @@
+{
+  "case_id": "SF-0389",
+  "synthetic": true,
+  "kind": "query_valid",
+  "path": "/alerts?limit=1",
+  "description": "Valid empty-database API pagination and filtering boundary case 389"
+}
