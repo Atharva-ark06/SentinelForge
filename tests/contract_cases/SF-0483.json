@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0483",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "changes": {
+    "event_type": "login_denied_483"
+  },
+  "description": "Reject invalid event 483 before storage"
+}
