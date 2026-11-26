@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0498",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "changes": {
+    "source_ip": "203.0.113.271"
+  },
+  "description": "Reject invalid event 498 before storage"
+}

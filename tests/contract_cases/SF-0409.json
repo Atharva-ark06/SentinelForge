@@ -1,0 +1,7 @@
+{
+  "case_id": "SF-0409",
+  "synthetic": true,
+  "kind": "query_valid",
+  "path": "/metrics",
+  "description": "Accepted query parameter contract 409"
+}

@@ -1,0 +1,7 @@
+{
+  "case_id": "SF-0401",
+  "synthetic": true,
+  "kind": "query_valid",
+  "path": "/events?offset=0",
+  "description": "Accepted query parameter contract 401"
+}

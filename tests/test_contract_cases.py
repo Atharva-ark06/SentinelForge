@@ -46,6 +46,15 @@ def test_contract_case(case_file, isolated_database, monkeypatch):
             response = client.post("/events", headers={"X-API-Key": case["key"]}, json=event)
             assert response.status_code == 401
             assert client.get("/events").json() == []
+        elif case["kind"] == "query_valid":
+            response = client.get(case["path"], headers={"X-API-Key": "test-secret"})
+            assert response.status_code == 200
+            assert isinstance(response.json(), (list, dict))
+        elif case["kind"] == "read_auth_protected":
+            monkeypatch.setattr(api, "PROTECT_READS", True)
+            response = client.get(case["path"], headers={"X-API-Key": case["key"]})
+            assert response.status_code == case["status"]
+            assert "detail" in response.json()
         elif case["kind"] == "query_invalid":
             response = client.get(case["path"], headers={"X-API-Key": "test-secret"})
             assert response.status_code == case["status"]

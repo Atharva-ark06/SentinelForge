@@ -1,0 +1,7 @@
+{
+  "case_id": "SF-0411",
+  "synthetic": true,
+  "kind": "query_valid",
+  "path": "/alerts?source_ip=192.0.2.1",
+  "description": "Accepted query parameter contract 411"
+}

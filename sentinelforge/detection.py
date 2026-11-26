@@ -31,10 +31,10 @@ def evaluate_new_event(new_event_id: int, db_path=None) -> list[dict[str, Any]]:
         end = current_time.isoformat()
         recent = conn.execute(
             """SELECT * FROM events WHERE timestamp >= ? AND timestamp <= ?
-               AND source_ip = ? ORDER BY timestamp, id""",
-            (start, end, current["source_ip"]),
+               AND source_ip = ? AND event_type = ? ORDER BY timestamp, id""",
+            (start, end, current["source_ip"], "login_failure"),
         ).fetchall()
-        recent = [dict(row) for row in recent if row["event_type"] == "login_failure"]
+        recent = [dict(row) for row in recent]
 
     failures_for_user = [
         e for e in recent

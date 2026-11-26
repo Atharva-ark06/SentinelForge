@@ -65,6 +65,17 @@ deployed HTTPS API and an exact CORS allowlist to display live records; absent
 that API, browser-only fictional data is the safe showcase. A green CI check
 is not a penetration-test certification.
 
+## November 26, 2026 – incremental security and dashboard review
+
+- Authentication: the API evaluates all configured key-rotation candidates before accepting/rejecting a shared secret and tests both current and previous keys. This remains machine-to-machine **shared-key authentication**, not OAuth, per-user identities, RBAC or MFA.
+- Detection backtracking: failure-only heuristics now select failure events in the SQL query itself; successful-login telemetry is retained without contributing to spray counts. Request IDs and alert evidence IDs remain the supported trace path.
+- Dashboard/API: the React client rejects HTTP redirects, excludes browser credentials, disables cached fetches, validates complete API response shapes before updating state, and labels the live-versus-synthetic provenance in the footer. Pages remains a **static** deployment, not an API host.
+- UX: clearer numbers and table typography, stronger cards, responsive hover behavior, reduced-motion support, and the existing top-right persistent theme switch.
+- Regression coverage: isolated API contract scenarios for authorization, payload validation, query limits, and unexpected values. Fixture volume is not a substitute for testing production configuration.
+- CI: continue to run backend Python 3.11–3.13, frontend TypeScript build, lint, CodeQL and dependency audit for the **final PR commit**. No claim of production security or successful live integration is made without an accessible backend.
+
+For the public showcase, a build without `VITE_API_BASE_URL` shows explicitly identified, browser-only fictional events and alerts. A real telemetry dashboard requires a separately deployed HTTPS FastAPI backend, exact CORS/host allowlists and an appropriate authentication gateway. Do not embed ingestion secrets into the Vite bundle.
+
 ## Architecture
 
 ```text

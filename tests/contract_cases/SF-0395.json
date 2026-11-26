@@ -1,0 +1,7 @@
+{
+  "case_id": "SF-0395",
+  "synthetic": true,
+  "kind": "query_valid",
+  "path": "/alerts?source_ip=192.0.2.1",
+  "description": "Valid empty-database API pagination and filtering boundary case 395"
+}

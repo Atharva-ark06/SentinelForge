@@ -1,0 +1,7 @@
+{
+  "case_id": "SF-0407",
+  "synthetic": true,
+  "kind": "query_valid",
+  "path": "/alerts?status=new",
+  "description": "Accepted query parameter contract 407"
+}

@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0486",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "changes": {
+    "timestamp": "2026-11-23T09:00:00"
+  },
+  "description": "Reject invalid event 486 before storage"
+}

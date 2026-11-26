@@ -1,0 +1,7 @@
+{
+  "case_id": "SF-0397",
+  "synthetic": true,
+  "kind": "query_valid",
+  "path": "/events?username=demo",
+  "description": "Valid empty-database API pagination and filtering boundary case 397"
+}

@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0501",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "changes": {
+    "username": "uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"
+  },
+  "description": "Reject invalid event 501 before storage"
+}

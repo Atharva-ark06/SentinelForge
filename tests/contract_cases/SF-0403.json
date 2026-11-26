@@ -1,0 +1,7 @@
+{
+  "case_id": "SF-0403",
+  "synthetic": true,
+  "kind": "query_valid",
+  "path": "/events?event_type=login_failure",
+  "description": "Accepted query parameter contract 403"
+}

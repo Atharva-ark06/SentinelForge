@@ -273,3 +273,22 @@ table td{font-size:12px;line-height:1.55}
 @media(prefers-reduced-motion:reduce){
   .panel,.metric,.rule-card,.top-actions button{animation:none!important;transition:none!important}
 }
+
+/* November 26: high-legibility SOC treatment with deliberate interactions. */
+.metric,.panel,.rule-card{border-radius:13px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.metric-top,.panel-head h2,.health-state b{font-weight:800}
+.metric>strong{font-size:clamp(26px,2.8vw,37px);font-weight:850}
+.metric>small,.panel-head p,.heading p{font-size:12px;line-height:1.6}
+table th{font-size:10px;font-weight:800;letter-spacing:.035em}
+table td{font-size:12px;line-height:1.5}
+table td b{font-size:12px;font-weight:750}
+.tools input,.tools select{font-size:12px;min-height:40px}
+.icon[aria-pressed="true"]{outline:2px solid #74c69d;outline-offset:2px}
+.notice[role="status"]{font-weight:750;border-left-width:5px}
+@media(hover:hover){
+  .metric:hover,.panel:hover,.rule-card:hover{border-color:#86bca0;box-shadow:0 14px 32px rgba(0,0,0,.16)}
+  .nav-item:hover{font-weight:700}
+}
+@media(prefers-reduced-motion:reduce){
+  .metric:hover,.rule-card:hover{transform:none!important}
+}

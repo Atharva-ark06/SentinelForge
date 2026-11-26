@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0508",
+  "synthetic": true,
+  "kind": "ingest_invalid",
+  "changes": {
+    "host": "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
+  },
+  "description": "Reject invalid event 508 before storage"
+}

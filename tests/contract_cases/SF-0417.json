@@ -1,0 +1,9 @@
+{
+  "case_id": "SF-0417",
+  "synthetic": true,
+  "kind": "read_auth_protected",
+  "path": "/metrics",
+  "key": "",
+  "status": 401,
+  "description": "Protected read denies incorrect credential case 417"
+}
